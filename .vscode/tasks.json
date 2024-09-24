@@ -1,0 +1,34 @@
+{
+	"version": "2.0.0",
+	"options": {
+	  "env": {}
+	},
+	"tasks": [
+	  {
+		"type": "shell",
+		"problemMatcher": [],
+		"label": "Clean: rm ./bin/*",
+		"command": "rm ./bin/*"
+	  },
+	  {
+		"type": "shell",
+		"problemMatcher": [],
+		"group": {
+		  "kind": "build",
+		  "isDefault": true
+		},
+		"label": "Odin: odin run src --out=./bin/out",
+		"command": "odin run src --out=./bin/out -vet"
+	  },
+	  {
+		"type": "shell",
+		"problemMatcher": [],
+		"group": {
+		  "kind": "test",
+		  "isDefault": true
+		},
+		"label": "Odin: odin test tests",
+		"command": "odin test tests"
+	  },
+	]
+}
