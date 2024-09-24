@@ -5,11 +5,20 @@ import "core:simd"
 
 Tuple :: distinct [4]f64
 
-tuple :: proc(x, y, z, w: real) -> Tuple {
+tuple_xyzw :: proc(x, y, z, w: real) -> Tuple {
 	return Tuple{x, y, z, w}
 }
 
-tuple_eq :: proc(a, b: Tuple) -> bool {
+tuple_t :: proc(t: $T/Tuple) -> Tuple {
+	return Tuple(t)
+}
+
+tuple :: proc {
+	tuple_xyzw,
+	tuple_t,
+}
+
+tuple_eq :: proc(a, b: $T/Tuple) -> bool {
 	delta := b - a
 
 	// https://pkg.odin-lang.org/core/simd/#from_array
@@ -23,4 +32,42 @@ tuple_eq :: proc(a, b: Tuple) -> bool {
 	result := simd.reduce_max(neq_simd)
 
 	return result == 0
+}
+
+Point :: distinct Tuple
+
+point_xyz :: proc(x, y, z: real) -> Point {
+	return Point{x, y, z, 1}
+}
+
+point_tuple :: proc(t: Tuple) -> Point {
+	return Point{t.x, t.y, t.z, 1}
+}
+
+point :: proc {
+	point_xyz,
+	point_tuple,
+}
+
+is_point :: proc(t: $T/Tuple) -> bool {
+	return float_eq(t.w, 1)
+}
+
+Vector :: distinct Tuple
+
+vector_xyz :: proc(x, y, z: real) -> Vector {
+	return Vector{x, y, z, 0}
+}
+
+vector_tuple :: proc(t: Tuple) -> Vector {
+	return Vector{t.x, t.y, t.z, 0}
+}
+
+vector :: proc {
+	vector_xyz,
+	vector_tuple,
+}
+
+is_vector :: proc(t: $T/Tuple) -> bool {
+	return float_eq(t.w, 0)
 }
