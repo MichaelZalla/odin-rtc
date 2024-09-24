@@ -89,3 +89,77 @@ vector_creates_tuples :: proc(t: ^testing.T) {
 
 	assert(m.tuple_eq(v1, v2))
 }
+
+@(test)
+tuple_addition :: proc(t: ^testing.T) {
+	// Scenario: Adding two tuples.
+
+	// Note: It's sensible to add two vectors, or to add a vector to a point;
+	// adding a point to another point, however, isn't meaningful, and would
+	// have the consequence of setting `w` to 2!
+
+	a1 := m.tuple(3, -2, 5, 1)
+	a2 := m.tuple(-2, 3, 1, 0)
+
+	sum := a1 + a2
+
+	expected_sum := m.tuple(1, 1, 6, 1)
+
+	assert(m.tuple_eq(sum, expected_sum))
+	assert(m.is_point(sum))
+	assert(!m.is_vector(sum))
+}
+
+@(test)
+subtract_point_from_point :: proc(t: ^testing.T) {
+	// Scenario: Subtracting two points produces a vector.
+
+	// Note: Subtracting one point from another has the effect of setting `w` to
+	// zero—meaning that the result of subtracting two points will be a vector!
+
+	p1 := m.point(3, 2, 1)
+	p2 := m.point(5, 6, 7)
+
+	difference := p1 - p2 // Vector.
+
+	expected_difference := m.vector(-2, -4, -6)
+
+	assert(m.tuple_eq(m.Tuple(difference), m.Tuple(expected_difference)))
+
+	assert(m.is_vector(difference))
+	assert(!m.is_point(difference))
+}
+
+@(test)
+subtract_vector_from_point :: proc(t: ^testing.T) {
+	// Scenario: Subtracting a vector from a point produces a point.
+
+	p := m.point(3, 2, 1)
+	v := m.vector(5, 6, 7)
+
+	difference := m.Tuple(p) - m.Tuple(v) // Point.
+
+	expected_difference := m.point(-2, -4, -6)
+
+	assert(m.tuple_eq(difference, m.Tuple(expected_difference)))
+
+	assert(m.is_point(difference))
+	assert(!m.is_vector(difference))
+}
+
+@(test)
+subtract_vector_from_vector :: proc(t: ^testing.T) {
+	// Scenario: Subtracting a vector from a vector produces a vector.
+
+	v1 := m.vector(3, 2, 1)
+	v2 := m.vector(5, 6, 7)
+
+	difference := v1 - v2 // Vector.
+
+	expected_difference := m.vector(-2, -4, -6)
+
+	assert(m.tuple_eq(difference, expected_difference))
+
+	assert(m.is_vector(difference))
+	assert(!m.is_point(difference))
+}
