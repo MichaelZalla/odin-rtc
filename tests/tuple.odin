@@ -182,3 +182,30 @@ negate_tuple :: proc(t: ^testing.T) {
 
 	assert(m.tuple_eq(-a, m.tuple(-1, 2, -3, 4)))
 }
+
+@(test)
+multiply_tuple_by_scalar :: proc(t: ^testing.T) {
+	// Scenario: Multiplying a tuple by a scalar.
+
+	a := m.tuple(1, -2, 3, -4)
+
+	assert(m.tuple_eq(a * 3.5, m.tuple(3.5, -7, 10.5, -14)))
+}
+
+@(test)
+multiply_tuple_by_fraction :: proc(t: ^testing.T) {
+	// Scenario: Multiplying a tuple by a fraction.
+
+	a := m.tuple(1, -2, 3, -4)
+
+	assert(m.tuple_eq(a * 0.5, m.tuple(0.5, -1, 1.5, -2)))
+}
+
+@(test)
+divide_tuple_by_scalar :: proc(t: ^testing.T) {
+	// Scenario: Dividing a tuple by a scalar.
+
+	a := m.tuple(1, -2, 3, -4)
+
+	assert(m.tuple_eq(a / 2, m.tuple(0.5, -1, 1.5, -2)))
+}
