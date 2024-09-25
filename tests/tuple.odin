@@ -272,3 +272,14 @@ vector_dot_product :: proc(t: ^testing.T) {
 
 	assert(m.float_eq(m.vector_dot(a, b), 20))
 }
+
+@(test)
+vector_cross_product :: proc(t: ^testing.T) {
+	// Scenario: The cross product of 2 vectors.
+
+	a := m.vector(1, 2, 3)
+	b := m.vector(2, 3, 4)
+
+	assert(m.tuple_eq(m.vector_cross(a, b), m.vector(-1, 2, -1)))
+	assert(m.tuple_eq(m.vector_cross(b, a), m.vector(1, -2, 1)))
+}
