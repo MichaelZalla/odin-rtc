@@ -163,3 +163,22 @@ subtract_vector_from_vector :: proc(t: ^testing.T) {
 	assert(m.is_vector(difference))
 	assert(!m.is_point(difference))
 }
+
+@(test)
+subtract_vector_from_zero_vector :: proc(t: ^testing.T) {
+	// Scenario: Subtracting a vector from the zero vector.
+
+	zero := m.vector(0, 0, 0)
+	v := m.vector(1, -2, 3)
+
+	assert(m.tuple_eq(zero - v, m.vector(-1, 2, -3)))
+}
+
+@(test)
+negate_tuple :: proc(t: ^testing.T) {
+	// Scenario: Negating a tuple.
+
+	a := m.tuple(1, -2, 3, -4)
+
+	assert(m.tuple_eq(-a, m.tuple(-1, 2, -3, 4)))
+}
