@@ -262,3 +262,13 @@ normalize_vector_2 :: proc(t: ^testing.T) {
 
 	assert(m.float_eq(m.vector_mag(actual_norm), 1))
 }
+
+@(test)
+vector_dot_product :: proc(t: ^testing.T) {
+	// Scenario: The dot product of 2 vectors.
+
+	a := m.vector(1, 2, 3)
+	b := m.vector(2, 3, 4)
+
+	assert(m.float_eq(m.vector_dot(a, b), 20))
+}

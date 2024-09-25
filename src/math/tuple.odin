@@ -86,3 +86,7 @@ vector_norm :: proc(v: Vector) -> Vector {
 
 	return vector(v.x / mag, v.y / mag, v.z / mag)
 }
+
+vector_dot :: proc(a: Vector, b: Vector) -> real {
+	return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w
+}
