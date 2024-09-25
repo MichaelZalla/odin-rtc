@@ -30,5 +30,14 @@
 		"label": "Odin: odin test tests",
 		"command": "odin test tests"
 	  },
+		{
+			"type": "shell",
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+			},
+			"label": "Odin: odin run examples/putting-it-together/chapter-01.odin -file",
+			"command": "odin run examples/putting-it-together/chapter-01.odin -file"
+			},
 	]
 }
