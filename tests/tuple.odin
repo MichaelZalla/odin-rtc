@@ -217,23 +217,23 @@ magnitude_of_vector :: proc(t: ^testing.T) {
 
 	right := m.vector(1, 0, 0)
 
-	assert(m.float_eq(m.vector_mag(right), 1))
+	assert(m.float_eq(m.mag(right), 1))
 
 	up := m.vector(0, 1, 0)
 
-	assert(m.float_eq(m.vector_mag(up), 1))
+	assert(m.float_eq(m.mag(up), 1))
 
 	forward := m.vector(0, 0, 1)
 
-	assert(m.float_eq(m.vector_mag(forward), 1))
+	assert(m.float_eq(m.mag(forward), 1))
 
 	a := m.vector(1, 2, 3)
 
-	assert(m.float_eq(m.vector_mag(a), math.sqrt(f64(14))))
+	assert(m.float_eq(m.mag(a), math.sqrt(f64(14))))
 
 	b := m.vector(-1, -2, -3)
 
-	assert(m.float_eq(m.vector_mag(b), math.sqrt(f64(14))))
+	assert(m.float_eq(m.mag(b), math.sqrt(f64(14))))
 }
 
 @(test)
@@ -242,7 +242,7 @@ normalize_vector_1 :: proc(t: ^testing.T) {
 
 	v := m.vector(4, 0, 0)
 
-	assert(m.tuple_eq(m.vector_norm(v), m.vector(1, 0, 0)))
+	assert(m.tuple_eq(m.norm(v), m.vector(1, 0, 0)))
 }
 
 @(test)
@@ -256,11 +256,11 @@ normalize_vector_2 :: proc(t: ^testing.T) {
 
 	expected_norm := m.vector(1 / sqrt_14, 2 / sqrt_14, 3 / sqrt_14)
 
-	actual_norm := m.vector_norm(v)
+	actual_norm := m.norm(v)
 
 	assert(m.tuple_eq(actual_norm, expected_norm))
 
-	assert(m.float_eq(m.vector_mag(actual_norm), 1))
+	assert(m.float_eq(m.mag(actual_norm), 1))
 }
 
 @(test)
@@ -270,7 +270,7 @@ vector_dot_product :: proc(t: ^testing.T) {
 	a := m.vector(1, 2, 3)
 	b := m.vector(2, 3, 4)
 
-	assert(m.float_eq(m.vector_dot(a, b), 20))
+	assert(m.float_eq(m.dot(a, b), 20))
 }
 
 @(test)
@@ -280,6 +280,6 @@ vector_cross_product :: proc(t: ^testing.T) {
 	a := m.vector(1, 2, 3)
 	b := m.vector(2, 3, 4)
 
-	assert(m.tuple_eq(m.vector_cross(a, b), m.vector(-1, 2, -1)))
-	assert(m.tuple_eq(m.vector_cross(b, a), m.vector(1, -2, 1)))
+	assert(m.tuple_eq(m.cross(a, b), m.vector(-1, 2, -1)))
+	assert(m.tuple_eq(m.cross(b, a), m.vector(1, -2, 1)))
 }

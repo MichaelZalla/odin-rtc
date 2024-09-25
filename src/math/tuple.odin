@@ -77,20 +77,20 @@ is_vector :: proc(t: $T/Tuple) -> bool {
 	return float_eq(t.w, 0)
 }
 
-vector_mag :: proc(v: Vector) -> real {
+mag :: proc(v: Vector) -> real {
 	return math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
 }
 
-vector_norm :: proc(v: Vector) -> Vector {
-	mag := vector_mag(v)
+norm :: proc(v: Vector) -> Vector {
+	mag := mag(v)
 
 	return vector(v.x / mag, v.y / mag, v.z / mag)
 }
 
-vector_dot :: proc(a: Vector, b: Vector) -> real {
+dot :: proc(a: Vector, b: Vector) -> real {
 	return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w
 }
 
-vector_cross :: proc(a: Vector, b: Vector) -> Vector {
+cross :: proc(a: Vector, b: Vector) -> Vector {
 	return vector(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
 }
