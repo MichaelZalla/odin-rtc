@@ -1,6 +1,7 @@
 package rtc_math
 
 import "core:fmt"
+import "core:math"
 import "core:simd"
 
 Tuple :: distinct [4]f64
@@ -34,6 +35,8 @@ tuple_eq :: proc(a, b: $T/Tuple) -> bool {
 	return result == 0
 }
 
+// Point
+
 Point :: distinct Tuple
 
 point_xyz :: proc(x, y, z: real) -> Point {
@@ -53,6 +56,8 @@ is_point :: proc(t: $T/Tuple) -> bool {
 	return float_eq(t.w, 1)
 }
 
+// Vector
+
 Vector :: distinct Tuple
 
 vector_xyz :: proc(x, y, z: real) -> Vector {
@@ -70,4 +75,8 @@ vector :: proc {
 
 is_vector :: proc(t: $T/Tuple) -> bool {
 	return float_eq(t.w, 0)
+}
+
+vector_mag :: proc(v: Vector) -> real {
+	return math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
 }

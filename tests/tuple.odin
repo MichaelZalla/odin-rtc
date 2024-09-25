@@ -1,5 +1,6 @@
 package tests
 
+import "core:math"
 import "core:testing"
 
 import m "../src/math"
@@ -208,4 +209,29 @@ divide_tuple_by_scalar :: proc(t: ^testing.T) {
 	a := m.tuple(1, -2, 3, -4)
 
 	assert(m.tuple_eq(a / 2, m.tuple(0.5, -1, 1.5, -2)))
+}
+
+@(test)
+magnitude_of_vector :: proc(t: ^testing.T) {
+	// Scenario: Computing the magnitude of the vector (1, 0, 0).
+
+	right := m.vector(1, 0, 0)
+
+	assert(m.float_eq(m.vector_mag(right), 1))
+
+	up := m.vector(0, 1, 0)
+
+	assert(m.float_eq(m.vector_mag(up), 1))
+
+	forward := m.vector(0, 0, 1)
+
+	assert(m.float_eq(m.vector_mag(forward), 1))
+
+	a := m.vector(1, 2, 3)
+
+	assert(m.float_eq(m.vector_mag(a), math.sqrt(f64(14))))
+
+	b := m.vector(-1, -2, -3)
+
+	assert(m.float_eq(m.vector_mag(b), math.sqrt(f64(14))))
 }
