@@ -235,3 +235,30 @@ magnitude_of_vector :: proc(t: ^testing.T) {
 
 	assert(m.float_eq(m.vector_mag(b), math.sqrt(f64(14))))
 }
+
+@(test)
+normalize_vector_1 :: proc(t: ^testing.T) {
+	// Scenario: Normalizing the vector (4, 0, 0) yields the unit vector (1, 0, 0).
+
+	v := m.vector(4, 0, 0)
+
+	assert(m.tuple_eq(m.vector_norm(v), m.vector(1, 0, 0)))
+}
+
+@(test)
+normalize_vector_2 :: proc(t: ^testing.T) {
+	// Scenario: Normalizing the vector (1, 2, 3) yields the unit vector
+	// (1/√14, 2/√14, 3/√14).
+
+	v := m.vector(1, 2, 3)
+
+	sqrt_14 := m.real(math.sqrt(f64(14)))
+
+	expected_norm := m.vector(1 / sqrt_14, 2 / sqrt_14, 3 / sqrt_14)
+
+	actual_norm := m.vector_norm(v)
+
+	assert(m.tuple_eq(actual_norm, expected_norm))
+
+	assert(m.float_eq(m.vector_mag(actual_norm), 1))
+}

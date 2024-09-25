@@ -80,3 +80,9 @@ is_vector :: proc(t: $T/Tuple) -> bool {
 vector_mag :: proc(v: Vector) -> real {
 	return math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
 }
+
+vector_norm :: proc(v: Vector) -> Vector {
+	mag := vector_mag(v)
+
+	return vector(v.x / mag, v.y / mag, v.z / mag)
+}
