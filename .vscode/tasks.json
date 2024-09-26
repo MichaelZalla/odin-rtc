@@ -17,8 +17,8 @@
 		  "kind": "build",
 		  "isDefault": true
 		},
-		"label": "Odin: odin run src --out=./bin/out",
-		"command": "odin run src --out=./bin/out -vet"
+		"label": "Odin: odin run src --out=./bin/src",
+		"command": "odin run src --out=./bin/src"
 	  },
 	  {
 		"type": "shell",
@@ -36,8 +36,8 @@
 			"group": {
 				"kind": "build",
 			},
-			"label": "Odin: odin run examples/putting-it-together/chapter-01.odin -file",
-			"command": "odin run examples/putting-it-together/chapter-01.odin -file"
+			"label": "Odin: odin run examples/putting-it-together/chapter-01.odin -file --out=./bin/chapter-01",
+			"command": "odin run examples/putting-it-together/chapter-01.odin -file --out=./bin/chapter-01"
 			},
 	]
 }
