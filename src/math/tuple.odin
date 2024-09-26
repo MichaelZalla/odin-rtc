@@ -94,3 +94,20 @@ dot :: proc(a: Vector, b: Vector) -> real {
 cross :: proc(a: Vector, b: Vector) -> Vector {
 	return vector(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
 }
+
+// Color
+
+Color :: distinct Tuple
+
+color_rgb :: proc(r, g, b: real) -> Color {
+	return Color{r, g, b, 0}
+}
+
+color_tuple :: proc(t: $T/Tuple) -> Color {
+	return Color{t.r, t.g, t.b, 0}
+}
+
+color :: proc {
+	color_rgb,
+	color_tuple,
+}
