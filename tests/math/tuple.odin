@@ -3,7 +3,7 @@ package tests
 import "core:math"
 import "core:testing"
 
-import m "../src/math"
+import m "../../src/math"
 
 @(test)
 tuple_is_xyzw :: proc(t: ^testing.T) {
