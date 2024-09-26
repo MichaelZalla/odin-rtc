@@ -3,3 +3,9 @@
 *.o
 bin
 ols.json
+
+# macOS
+.DS_Store
+
+# Output
+examples/putting-it-together/chapter-02/projectile.ppm

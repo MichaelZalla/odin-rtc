@@ -3,7 +3,7 @@ package pit_chapter_01
 import "core:fmt"
 import "core:strings"
 
-import m "../../src/math"
+import m "../../../src/math"
 
 Projectile :: struct {
 	position: m.Point,
