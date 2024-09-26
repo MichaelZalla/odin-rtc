@@ -27,8 +27,8 @@
 		  "kind": "test",
 		  "isDefault": true
 		},
-		"label": "Odin: odin test tests/math",
-		"command": "odin test tests/math"
+		"label": "Odin: odin test tests -all-packages",
+		"command": "odin test tests -all-packages"
 	  },
 		{
 			"type": "shell",
