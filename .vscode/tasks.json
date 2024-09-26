@@ -1,43 +1,43 @@
 {
-	"version": "2.0.0",
-	"options": {
-	  "env": {}
-	},
-	"tasks": [
-	  {
-		"type": "shell",
-		"problemMatcher": [],
-		"label": "Clean: rm ./bin/*",
-		"command": "rm ./bin/*"
-	  },
-	  {
-		"type": "shell",
-		"problemMatcher": [],
-		"group": {
-		  "kind": "build",
-		  "isDefault": true
-		},
-		"label": "Odin: odin run src --out=./bin/src",
-		"command": "odin run src --out=./bin/src"
-	  },
-	  {
-		"type": "shell",
-		"problemMatcher": [],
-		"group": {
-		  "kind": "test",
-		  "isDefault": true
-		},
-		"label": "Odin: odin test tests -all-packages",
-		"command": "odin test tests -all-packages"
-	  },
-		{
-			"type": "shell",
-			"problemMatcher": [],
-			"group": {
-				"kind": "build",
-			},
-			"label": "Odin: odin run examples/putting-it-together/chapter-01.odin -file --out=./bin/chapter-01",
-			"command": "odin run examples/putting-it-together/chapter-01.odin -file --out=./bin/chapter-01"
-			},
-	]
+  "version": "2.0.0",
+  "options": {
+    "env": {},
+  },
+  "tasks": [
+    {
+      "type": "shell",
+      "problemMatcher": [],
+      "label": "Clean: rm ./bin/*",
+      "command": "rm ./bin/*"
+    },
+    {
+      "type": "shell",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "label": "Odin: odin run src --out=./bin/src",
+      "command": "odin run src --out=./bin/src"
+    },
+    {
+      "type": "shell",
+      "problemMatcher": [],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "label": "Odin: odin test tests -all-packages",
+      "command": "odin test tests -all-packages"
+    },
+    {
+      "type": "shell",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build"
+      },
+      "label": "Odin: odin run examples/putting-it-together/chapter-01.odin -file --out=./bin/chapter-01",
+      "command": "odin run examples/putting-it-together/chapter-01.odin -file --out=./bin/chapter-01"
+    }
+  ]
 }
