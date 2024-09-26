@@ -1,4 +1,4 @@
-package rtc_math
+package rt_math
 
 real :: f64
 

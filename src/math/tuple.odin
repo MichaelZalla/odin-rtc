@@ -1,4 +1,4 @@
-package rtc_math
+package rt_math
 
 import "core:fmt"
 import "core:math"
