@@ -50,32 +50,7 @@ main :: proc() {
 	paths := [2]string{os.get_current_directory(), rel_path}
 	abs_path := strings.concatenate(paths[:])
 
-	mode: int = 0
-
-	when ODIN_OS == .Linux || ODIN_OS == .Darwin {
-		mode = os.S_IRUSR | os.S_IWUSR | os.S_IRGRP | os.S_IROTH
-	}
-
-	fd, err := os.open(abs_path, os.O_WRONLY | os.O_CREATE, mode)
-
-	if err != os.ERROR_NONE {
-		// @TODO: Handle error!
-		fmt.println(err)
-	}
-
-	defer os.close(fd)
-
 	bytes := transmute([]u8)ppm
-	bytes_written: int
 
-	bytes_written, err = os.write(fd, bytes)
-
-	fmt.println("Bytes written:", bytes_written)
-
-	if err != os.ERROR_NONE {
-		// @TODO: Handle error!
-		fmt.println(err)
-	}
-
-	// Success!
+	success := os.write_entire_file(abs_path, bytes[:])
 }
