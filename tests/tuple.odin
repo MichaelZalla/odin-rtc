@@ -9,10 +9,10 @@ import m "../src/math"
 tuple_is_xyzw :: proc(t: ^testing.T) {
 	t1 := m.Tuple{1, 2, 3, 4}
 
-	assert(t1.x == 1)
-	assert(t1.y == 2)
-	assert(t1.z == 3)
-	assert(t1.w == 4)
+	testing.expect(t, t1.x == 1)
+	testing.expect(t, t1.y == 2)
+	testing.expect(t, t1.z == 3)
+	testing.expect(t, t1.w == 4)
 }
 
 @(test)
@@ -23,9 +23,9 @@ tuple_can_be_compared_for_equality :: proc(t: ^testing.T) {
 	t2 := m.Tuple{epsilon, epsilon, epsilon, 1}
 	t3 := m.Tuple{epsilon * 2, epsilon * 2, epsilon * 2, 1}
 
-	assert(m.tuple_eq(t1, t2))
-	assert(m.tuple_eq(t2, t3))
-	assert(!m.tuple_eq(t1, t3))
+	testing.expect(t, m.tuple_eq(t1, t2))
+	testing.expect(t, m.tuple_eq(t2, t3))
+	testing.expect(t, !m.tuple_eq(t1, t3))
 }
 
 @(test)
@@ -34,8 +34,8 @@ point_is_a_tuple :: proc(t: ^testing.T) {
 
 	t1 := m.tuple(4.3, -4.2, 3.1, 1.0)
 
-	assert(m.is_point(t1))
-	assert(!m.is_vector(t1))
+	testing.expect(t, m.is_point(t1))
+	testing.expect(t, !m.is_vector(t1))
 }
 
 @(test)
@@ -45,19 +45,19 @@ point_creates_tuples :: proc(t: ^testing.T) {
 	t1 := m.tuple(4.3, -4.2, 3.1, 1.0)
 	p1 := m.point(t1)
 
-	assert(m.is_point(p1))
-	assert(!m.is_vector(p1))
+	testing.expect(t, m.is_point(p1))
+	testing.expect(t, !m.is_vector(p1))
 
-	assert(m.tuple_eq(t1, m.Tuple(p1)))
+	testing.expect(t, m.tuple_eq(t1, m.Tuple(p1)))
 
-	assert(p1.x == 4.3)
-	assert(p1.y == -4.2)
-	assert(p1.z == 3.1)
-	assert(p1.w == 1)
+	testing.expect(t, p1.x == 4.3)
+	testing.expect(t, p1.y == -4.2)
+	testing.expect(t, p1.z == 3.1)
+	testing.expect(t, p1.w == 1)
 
 	p2 := m.point_xyz(p1.x, p1.y, p1.z)
 
-	assert(m.tuple_eq(p1, p2))
+	testing.expect(t, m.tuple_eq(p1, p2))
 }
 
 @(test)
@@ -66,8 +66,8 @@ vector_is_a_tuple :: proc(t: ^testing.T) {
 
 	t1 := m.tuple(4.3, -4.2, 3.1, 0.0)
 
-	assert(m.is_vector(t1))
-	assert(!m.is_point(t1))
+	testing.expect(t, m.is_vector(t1))
+	testing.expect(t, !m.is_point(t1))
 }
 
 @(test)
@@ -77,18 +77,18 @@ vector_creates_tuples :: proc(t: ^testing.T) {
 	t1 := m.tuple(4.3, -4.2, 3.1, 0.0)
 	v1 := m.vector(t1)
 
-	assert(m.is_vector(v1))
-	assert(!m.is_point(v1))
-	assert(m.tuple_eq(t1, m.Tuple(v1)))
+	testing.expect(t, m.is_vector(v1))
+	testing.expect(t, !m.is_point(v1))
+	testing.expect(t, m.tuple_eq(t1, m.Tuple(v1)))
 
-	assert(v1.x == 4.3)
-	assert(v1.y == -4.2)
-	assert(v1.z == 3.1)
-	assert(v1.w == 0)
+	testing.expect(t, v1.x == 4.3)
+	testing.expect(t, v1.y == -4.2)
+	testing.expect(t, v1.z == 3.1)
+	testing.expect(t, v1.w == 0)
 
 	v2 := m.vector_xyz(v1.x, v1.y, v1.z)
 
-	assert(m.tuple_eq(v1, v2))
+	testing.expect(t, m.tuple_eq(v1, v2))
 }
 
 @(test)
@@ -106,9 +106,9 @@ tuple_addition :: proc(t: ^testing.T) {
 
 	expected_sum := m.tuple(1, 1, 6, 1)
 
-	assert(m.tuple_eq(sum, expected_sum))
-	assert(m.is_point(sum))
-	assert(!m.is_vector(sum))
+	testing.expect(t, m.tuple_eq(sum, expected_sum))
+	testing.expect(t, m.is_point(sum))
+	testing.expect(t, !m.is_vector(sum))
 }
 
 @(test)
@@ -121,14 +121,13 @@ subtract_point_from_point :: proc(t: ^testing.T) {
 	p1 := m.point(3, 2, 1)
 	p2 := m.point(5, 6, 7)
 
-	difference := p1 - p2 // Vector.
-
+	difference := m.vector(m.Tuple(p1 - p2))
 	expected_difference := m.vector(-2, -4, -6)
 
-	assert(m.tuple_eq(m.Tuple(difference), m.Tuple(expected_difference)))
+	testing.expect(t, m.tuple_eq(difference, expected_difference))
 
-	assert(m.is_vector(difference))
-	assert(!m.is_point(difference))
+	testing.expect(t, m.is_vector(difference))
+	testing.expect(t, !m.is_point(difference))
 }
 
 @(test)
@@ -139,13 +138,12 @@ subtract_vector_from_point :: proc(t: ^testing.T) {
 	v := m.vector(5, 6, 7)
 
 	difference := m.Tuple(p) - m.Tuple(v) // Point.
+	expected_difference := m.Tuple(m.point(-2, -4, -6))
 
-	expected_difference := m.point(-2, -4, -6)
+	testing.expect(t, m.tuple_eq(difference, expected_difference))
 
-	assert(m.tuple_eq(difference, m.Tuple(expected_difference)))
-
-	assert(m.is_point(difference))
-	assert(!m.is_vector(difference))
+	testing.expect(t, m.is_point(difference))
+	testing.expect(t, !m.is_vector(difference))
 }
 
 @(test)
@@ -155,14 +153,13 @@ subtract_vector_from_vector :: proc(t: ^testing.T) {
 	v1 := m.vector(3, 2, 1)
 	v2 := m.vector(5, 6, 7)
 
-	difference := v1 - v2 // Vector.
-
+	difference := v1 - v2
 	expected_difference := m.vector(-2, -4, -6)
 
-	assert(m.tuple_eq(difference, expected_difference))
+	testing.expect(t, m.tuple_eq(difference, expected_difference))
 
-	assert(m.is_vector(difference))
-	assert(!m.is_point(difference))
+	testing.expect(t, m.is_vector(difference))
+	testing.expect(t, !m.is_point(difference))
 }
 
 @(test)
@@ -172,7 +169,7 @@ subtract_vector_from_zero_vector :: proc(t: ^testing.T) {
 	zero := m.vector(0, 0, 0)
 	v := m.vector(1, -2, 3)
 
-	assert(m.tuple_eq(zero - v, m.vector(-1, 2, -3)))
+	testing.expect(t, m.tuple_eq(zero - v, m.vector(-1, 2, -3)))
 }
 
 @(test)
@@ -181,7 +178,7 @@ negate_tuple :: proc(t: ^testing.T) {
 
 	a := m.tuple(1, -2, 3, -4)
 
-	assert(m.tuple_eq(-a, m.tuple(-1, 2, -3, 4)))
+	testing.expect(t, m.tuple_eq(-a, m.tuple(-1, 2, -3, 4)))
 }
 
 @(test)
@@ -190,7 +187,7 @@ multiply_tuple_by_scalar :: proc(t: ^testing.T) {
 
 	a := m.tuple(1, -2, 3, -4)
 
-	assert(m.tuple_eq(a * 3.5, m.tuple(3.5, -7, 10.5, -14)))
+	testing.expect(t, m.tuple_eq(a * 3.5, m.tuple(3.5, -7, 10.5, -14)))
 }
 
 @(test)
@@ -199,7 +196,7 @@ multiply_tuple_by_fraction :: proc(t: ^testing.T) {
 
 	a := m.tuple(1, -2, 3, -4)
 
-	assert(m.tuple_eq(a * 0.5, m.tuple(0.5, -1, 1.5, -2)))
+	testing.expect(t, m.tuple_eq(a * 0.5, m.tuple(0.5, -1, 1.5, -2)))
 }
 
 @(test)
@@ -208,7 +205,7 @@ divide_tuple_by_scalar :: proc(t: ^testing.T) {
 
 	a := m.tuple(1, -2, 3, -4)
 
-	assert(m.tuple_eq(a / 2, m.tuple(0.5, -1, 1.5, -2)))
+	testing.expect(t, m.tuple_eq(a / 2, m.tuple(0.5, -1, 1.5, -2)))
 }
 
 @(test)
@@ -217,23 +214,23 @@ magnitude_of_vector :: proc(t: ^testing.T) {
 
 	right := m.vector(1, 0, 0)
 
-	assert(m.float_eq(m.mag(right), 1))
+	testing.expect(t, m.float_eq(m.mag(right), 1))
 
 	up := m.vector(0, 1, 0)
 
-	assert(m.float_eq(m.mag(up), 1))
+	testing.expect(t, m.float_eq(m.mag(up), 1))
 
 	forward := m.vector(0, 0, 1)
 
-	assert(m.float_eq(m.mag(forward), 1))
+	testing.expect(t, m.float_eq(m.mag(forward), 1))
 
 	a := m.vector(1, 2, 3)
 
-	assert(m.float_eq(m.mag(a), math.sqrt(f64(14))))
+	testing.expect(t, m.float_eq(m.mag(a), math.sqrt(f64(14))))
 
 	b := m.vector(-1, -2, -3)
 
-	assert(m.float_eq(m.mag(b), math.sqrt(f64(14))))
+	testing.expect(t, m.float_eq(m.mag(b), math.sqrt(f64(14))))
 }
 
 @(test)
@@ -242,7 +239,7 @@ normalize_vector_1 :: proc(t: ^testing.T) {
 
 	v := m.vector(4, 0, 0)
 
-	assert(m.tuple_eq(m.norm(v), m.vector(1, 0, 0)))
+	testing.expect(t, m.tuple_eq(m.norm(v), m.vector(1, 0, 0)))
 }
 
 @(test)
@@ -254,13 +251,11 @@ normalize_vector_2 :: proc(t: ^testing.T) {
 
 	sqrt_14 := m.real(math.sqrt(f64(14)))
 
+	norm := m.norm(v)
 	expected_norm := m.vector(1 / sqrt_14, 2 / sqrt_14, 3 / sqrt_14)
 
-	actual_norm := m.norm(v)
-
-	assert(m.tuple_eq(actual_norm, expected_norm))
-
-	assert(m.float_eq(m.mag(actual_norm), 1))
+	testing.expect(t, m.tuple_eq(norm, expected_norm))
+	testing.expect(t, m.float_eq(m.mag(norm), 1))
 }
 
 @(test)
@@ -270,7 +265,7 @@ vector_dot_product :: proc(t: ^testing.T) {
 	a := m.vector(1, 2, 3)
 	b := m.vector(2, 3, 4)
 
-	assert(m.float_eq(m.dot(a, b), 20))
+	testing.expect(t, m.float_eq(m.dot(a, b), 20))
 }
 
 @(test)
@@ -280,8 +275,8 @@ vector_cross_product :: proc(t: ^testing.T) {
 	a := m.vector(1, 2, 3)
 	b := m.vector(2, 3, 4)
 
-	assert(m.tuple_eq(m.cross(a, b), m.vector(-1, 2, -1)))
-	assert(m.tuple_eq(m.cross(b, a), m.vector(1, -2, 1)))
+	testing.expect(t, m.tuple_eq(m.cross(a, b), m.vector(-1, 2, -1)))
+	testing.expect(t, m.tuple_eq(m.cross(b, a), m.vector(1, -2, 1)))
 }
 
 @(test)
@@ -290,9 +285,9 @@ color_tuple :: proc(t: ^testing.T) {
 
 	c := m.color(-0.5, 0.4, 1.7)
 
-	assert(c.r == -0.5)
-	assert(c.g == 0.4)
-	assert(c.b == 1.7)
+	testing.expect(t, c.r == -0.5)
+	testing.expect(t, c.g == 0.4)
+	testing.expect(t, c.b == 1.7)
 }
 
 @(test)
@@ -305,7 +300,7 @@ color_addition :: proc(t: ^testing.T) {
 	sum := c1 + c2
 	expected_sum := m.color(1.6, 0.7, 1.0)
 
-	assert(m.tuple_eq(sum, expected_sum))
+	testing.expect(t, m.tuple_eq(sum, expected_sum))
 }
 
 @(test)
@@ -318,7 +313,7 @@ color_subtraction :: proc(t: ^testing.T) {
 	difference := c1 - c2
 	expected_difference := m.color(0.2, 0.5, 0.5)
 
-	assert(m.tuple_eq(difference, expected_difference))
+	testing.expect(t, m.tuple_eq(difference, expected_difference))
 }
 
 @(test)
@@ -327,7 +322,7 @@ color_scalar_multiply :: proc(t: ^testing.T) {
 
 	c := m.color(0.2, 0.3, 0.4)
 
-	assert(m.tuple_eq(m.Tuple(c * 2), m.tuple(0.4, 0.6, 0.8, 0)))
+	testing.expect(t, m.tuple_eq(m.Tuple(c * 2), m.tuple(0.4, 0.6, 0.8, 0)))
 }
 
 @(test)
@@ -340,5 +335,5 @@ color_color_multiply :: proc(t: ^testing.T) {
 	product := c1 * c2
 	expected_product := m.color(0.9, 0.2, 0.04)
 
-	assert(m.tuple_eq(product, expected_product))
+	testing.expect(t, m.tuple_eq(product, expected_product))
 }
