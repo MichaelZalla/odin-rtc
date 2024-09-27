@@ -4,7 +4,7 @@ import "core:fmt"
 import "core:math"
 import "core:simd"
 
-Tuple :: distinct [4]f64
+Tuple :: distinct [4]real
 
 tuple_xyzw :: proc(x, y, z, w: real) -> Tuple {
 	return Tuple{x, y, z, w}

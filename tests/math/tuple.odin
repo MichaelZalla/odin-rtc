@@ -226,11 +226,11 @@ magnitude_of_vector :: proc(t: ^testing.T) {
 
 	a := m.vector(1, 2, 3)
 
-	testing.expect(t, m.float_eq(m.mag(a), math.sqrt(f64(14))))
+	testing.expect(t, m.float_eq(m.mag(a), math.sqrt(m.real(14))))
 
 	b := m.vector(-1, -2, -3)
 
-	testing.expect(t, m.float_eq(m.mag(b), math.sqrt(f64(14))))
+	testing.expect(t, m.float_eq(m.mag(b), math.sqrt(m.real(14))))
 }
 
 @(test)
@@ -249,7 +249,7 @@ normalize_vector_2 :: proc(t: ^testing.T) {
 
 	v := m.vector(1, 2, 3)
 
-	sqrt_14 := m.real(math.sqrt(f64(14)))
+	sqrt_14 := m.real(math.sqrt(m.real(14)))
 
 	norm := m.norm(v)
 	expected_norm := m.vector(1 / sqrt_14, 2 / sqrt_14, 3 / sqrt_14)
