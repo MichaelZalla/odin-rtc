@@ -546,3 +546,44 @@ mat4_shear_z_y :: proc(t: ^testing.T) {
 
 	testing.expect(t, shear * p == m.point(2, 3, 7))
 }
+
+@(test)
+mat4_transform_single :: proc(t: ^testing.T) {
+	// Scenario: Individual transforms are applied in order.
+
+	p := m.point(1, 0, 1)
+
+	rotate := m.mat4_rotate_x(PI_OVER_2)
+	scale := m.mat4_scale(5)
+	translate := m.mat4(linalg.matrix4_translate(m.to_xyz(m.vector(10, 5, 7))))
+
+	p2 := rotate * p
+
+	testing.expect(t, m.tuple_eq(p2, m.point(1, -1, 0)))
+
+	p3 := scale * p2
+
+	testing.expect(t, m.tuple_eq(p3, m.point(5, -5, 0)))
+
+	p4 := translate * p3
+
+	testing.expect(t, m.tuple_eq(p4, m.point(15, 0, 7)))
+}
+
+@(test)
+mat4_transform_multiple :: proc(t: ^testing.T) {
+	// Scenario: A chain of transforms are applied in reverse order.
+
+	p := m.point(1, 0, 1)
+
+	rotate := m.mat4_rotate_x(PI_OVER_2)
+	scale := m.mat4_scale(5)
+	translate := m.mat4(linalg.matrix4_translate(m.to_xyz(m.vector(10, 5, 7))))
+
+	transforms: [dynamic]m.mat4 = {translate, scale, rotate}
+	defer delete(transforms)
+
+	combined := m.mat4_reverse_concat(transforms)
+
+	testing.expect(t, m.tuple_eq(combined * p, m.point(15, 0, 7)))
+}

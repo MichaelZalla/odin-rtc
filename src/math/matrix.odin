@@ -122,8 +122,17 @@ mat4_translate :: proc(v: Vector) -> mat4 {
 	return mat4(linalg.matrix4_translate(to_xyz(v)))
 }
 
-mat4_scale :: proc(v: Vector) -> mat4 {
+mat4_scale_uniform :: proc(s: real) -> mat4 {
+	return mat4(linalg.matrix4_scale([3]real{s, s, s}))
+}
+
+mat4_scale_vector :: proc(v: Vector) -> mat4 {
 	return mat4(linalg.matrix4_scale(to_xyz(v)))
+}
+
+mat4_scale :: proc {
+	mat4_scale_uniform,
+	mat4_scale_vector,
 }
 
 mat4_rotate :: proc(axis: Vector, angle_radians: real) -> mat4 {
@@ -171,4 +180,16 @@ mat4_shear :: proc(x_per_y, x_per_z, y_per_x, y_per_z, z_per_x, z_per_y: real) -
 		0,
 		1,
 	}
+}
+
+mat4_reverse_concat :: proc(transforms: [dynamic]mat4) -> mat4 {
+	identity: mat4 = 1
+
+	t := identity
+
+	for i in 0 ..< len(transforms) {
+		t = transforms[len(transforms) - 1 - i] * t
+	}
+
+	return t
 }
