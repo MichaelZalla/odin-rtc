@@ -194,13 +194,10 @@ mat4_cofactor :: proc(t: ^testing.T) {
 
 	a := m.mat4{-2, -8, 3, 5, -3, 1, 7, 3, 1, 2, -9, 6, -6, 7, 7, -9}
 
-	// @NOTE: Would need to change this if `real` is changed from `f64`!
-	cofactor_proc := linalg.matrix4_cofactor_f64
-
-	testing.expect(t, cofactor_proc(a, 0, 0) == 690)
-	testing.expect(t, cofactor_proc(a, 1, 0) == 447)
-	testing.expect(t, cofactor_proc(a, 2, 0) == 210)
-	testing.expect(t, cofactor_proc(a, 3, 0) == 51)
+	testing.expect(t, linalg.matrix4_cofactor(a, 0, 0) == 690)
+	testing.expect(t, linalg.matrix4_cofactor(a, 1, 0) == 447)
+	testing.expect(t, linalg.matrix4_cofactor(a, 2, 0) == 210)
+	testing.expect(t, linalg.matrix4_cofactor(a, 3, 0) == 51)
 
 	testing.expect(t, linalg.determinant(a) == -4071)
 }
