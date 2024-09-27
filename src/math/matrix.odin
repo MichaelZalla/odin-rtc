@@ -117,3 +117,33 @@ mat4_invertible :: proc(a: mat4) -> bool {
 
 	return determinant != 0
 }
+
+mat4_translate :: proc(v: Vector) -> mat4 {
+	return mat4(linalg.matrix4_translate(to_xyz(v)))
+}
+
+mat4_scale :: proc(v: Vector) -> mat4 {
+	return mat4(linalg.matrix4_scale(to_xyz(v)))
+}
+
+mat4_rotate :: proc(axis: Vector, angle_radians: real) -> mat4 {
+	return mat4(linalg.matrix4_rotate(angle_radians, to_xyz(axis)))
+}
+
+mat4_rotate_x :: proc(angle_radians: real) -> mat4 {
+	X_AXIS :: Vector{1, 0, 0, 0}
+
+	return mat4_rotate(X_AXIS, angle_radians)
+}
+
+mat4_rotate_y :: proc(angle_radians: real) -> mat4 {
+	Y_AXIS :: Vector{0, 1, 0, 0}
+
+	return mat4_rotate(Y_AXIS, angle_radians)
+}
+
+mat4_rotate_z :: proc(angle_radians: real) -> mat4 {
+	Z_AXIS :: Vector{0, 0, 1, 0}
+
+	return mat4_rotate(Z_AXIS, angle_radians)
+}

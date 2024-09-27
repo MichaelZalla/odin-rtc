@@ -35,6 +35,10 @@ tuple_eq :: proc(a, b: $T/Tuple) -> bool {
 	return result == 0
 }
 
+to_xyz :: proc(t: $T/Tuple) -> [3]real {
+	return [3]real{t.x, t.y, t.z}
+}
+
 // Point
 
 Point :: distinct Tuple

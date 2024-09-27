@@ -7,6 +7,11 @@ import "core:testing"
 
 import m "../../src/math"
 
+PI_OVER_2 :: linalg.PI / 2
+PI_OVER_4 :: linalg.PI / 4
+
+SQRT_2_OVER_2 :: linalg.SQRT_TWO / 2
+
 @(test)
 make_mat4 :: proc(t: ^testing.T) {
 	// Scenario: Constructing and inspecting a 4x4 matrix.
@@ -337,4 +342,141 @@ mat4_inverse_3 :: proc(t: ^testing.T) {
 		original,
 		expected_original,
 	)
+}
+
+@(test)
+mat4_translate_point :: proc(t: ^testing.T) {
+	// Scenario: Multiplying by a 4x4 translation matrix.
+
+	transform := m.mat4(linalg.matrix4_translate([3]m.real{5, -3, 2}))
+
+	p := m.point(-3, 4, 5)
+
+	result := transform * p
+	expected_result := m.point(2, 1, 7)
+
+	testing.expect(t, result == expected_result)
+}
+
+@(test)
+mat4_translate_inverse_point :: proc(t: ^testing.T) {
+	// Scenario: Multiplying by the inverse of a 4x4 translation matrix.
+
+	transform := m.mat4(linalg.matrix4_translate([3]m.real{5, -3, 2}))
+	inverse := m.mat4(linalg.matrix4_inverse(transform))
+
+	p := m.point(-3, 4, 5)
+
+	result := inverse * p
+	expected_result := m.point(-8, 7, 3)
+
+	testing.expect(t, result == expected_result)
+}
+
+@(test)
+mat4_translate_vector :: proc(t: ^testing.T) {
+	// Scenario: Translation does not affect vectors.
+
+	translate := m.mat4_translate(m.vector(5, -3, 2))
+
+	v := m.vector(-3, 4, 5)
+
+	testing.expect(t, translate * v == v)
+}
+
+@(test)
+mat4_scale_point :: proc(t: ^testing.T) {
+	// Scenario: A 4x4 scaling matrix applied to a point.
+
+	scale := m.mat4_scale(m.vector(2, 3, 4))
+
+	p := m.point(-4, 6, 8)
+
+	testing.expect(t, scale * p == m.point(-8, 18, 32))
+}
+
+@(test)
+mat4_scale_vector :: proc(t: ^testing.T) {
+	// Scenario: A 4x4 scaling matrix applied to a vector.
+
+	scale := m.mat4_scale(m.vector(2, 3, 4))
+
+	v := m.vector(-4, 6, 8)
+
+	testing.expect(t, scale * v == m.vector(-8, 18, 32))
+}
+
+@(test)
+mat4_scale_inverse :: proc(t: ^testing.T) {
+	// Scenario: Multiplying by the inverse of a 4x4 scaling matrix.
+
+	scale := m.mat4_scale(m.vector(2, 3, 4))
+	scale_inverse := m.mat4(linalg.matrix4_inverse(scale))
+
+	v := m.vector(-4, 6, 8)
+
+	testing.expect(t, scale_inverse * v == m.vector(-2, 2, 2))
+}
+
+@(test)
+mat4_reflection :: proc(t: ^testing.T) {
+	// Scenario: Reflection is scaling by a negative value.
+
+	scale := m.mat4_scale(m.vector(-1, 1, 1))
+
+	p := m.point(2, 3, 4)
+
+	testing.expect(t, scale * p == m.point(-2, 3, 4))
+}
+
+@(test)
+mat4_rotate_x :: proc(t: ^testing.T) {
+	// Scenario: Rotating a point around the X axis.
+
+	p := m.point(0, 1, 0)
+
+	half_quarter_x := m.mat4_rotate_x(PI_OVER_4)
+	full_quarter_x := m.mat4_rotate_x(PI_OVER_2)
+
+	testing.expect(t, m.tuple_eq(half_quarter_x * p, m.point(0, SQRT_2_OVER_2, SQRT_2_OVER_2)))
+	testing.expect(t, m.tuple_eq(full_quarter_x * p, m.point(0, 0, 1)))
+}
+
+@(test)
+mat4_rotate_inverse_x :: proc(t: ^testing.T) {
+	// Scenario: The inverse of an X-rotation rotates in the opposite direction.
+
+	p := m.point(0, 1, 0)
+
+	half_quarter_x := m.mat4_rotate_x(PI_OVER_4)
+
+	inverse := m.mat4(linalg.matrix4_inverse(half_quarter_x))
+
+	testing.expect(t, m.tuple_eq(inverse * p, m.point(0, SQRT_2_OVER_2, -SQRT_2_OVER_2)))
+}
+
+@(test)
+mat4_rotate_y :: proc(t: ^testing.T) {
+	// Scenario: Rotating a point around the Y axis.
+
+	p := m.point(0, 0, 1)
+
+	half_quarter_y := m.mat4_rotate_y(PI_OVER_4)
+	full_quarter_y := m.mat4_rotate_y(PI_OVER_2)
+
+	testing.expect(t, m.tuple_eq(half_quarter_y * p, m.point(SQRT_2_OVER_2, 0, SQRT_2_OVER_2)))
+	testing.expect(t, m.tuple_eq(full_quarter_y * p, m.point(1, 0, 0)))
+}
+
+@(test)
+mat4_rotate_z :: proc(t: ^testing.T) {
+	// Scenario: Rotating a point around the Y axis.
+
+	p := m.point(0, 1, 0)
+
+	half_quarter_z := m.mat4_rotate_z(PI_OVER_4)
+	full_quarter_z := m.mat4_rotate_z(PI_OVER_2)
+
+	testing.expect(t, m.tuple_eq(half_quarter_z * p, m.point(-SQRT_2_OVER_2, SQRT_2_OVER_2, 0)))
+	testing.expect(t, m.tuple_eq(full_quarter_z * p, m.point(-1, 0, 0)))
 }
