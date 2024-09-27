@@ -1,10 +1,12 @@
 package pit_chapter_04
 
+import "core:fmt"
 import linalg "core:math/linalg"
 
 import rt "../../../src"
 import fs "../../../src/fs"
 import m "../../../src/math"
+import profile "../../../src/profile"
 
 main :: proc() {
 	DIMENSION :: 480
@@ -51,6 +53,22 @@ main :: proc() {
 		}
 	}
 
+	get_clock_points_world_space_naive :: proc() -> [dynamic]m.Point {
+		points: [dynamic]m.Point
+
+		midnight := m.point(0, 1, 0)
+
+		angle_theta_delta := linalg.TAU / 12
+
+		for i in 0 ..< 12 {
+			rotation := m.mat4_rotate_z(angle_theta_delta * f64(i))
+
+			append(&points, rotation * midnight)
+		}
+
+		return points
+	}
+
 	plot_world_space_point :: proc(c: ^rt.Canvas, p_world: m.Point, color: rt.Color) {
 		world_to_screen :: proc(p_world: m.Point) -> m.Point {
 			scale_factor := DIMENSION_OVER_2 * 0.75
@@ -68,6 +86,24 @@ main :: proc() {
 		   int(p_screen.y) < c.height {
 			rt.canvas_pixel_set(c, int(p_screen.x), int(p_screen.y), color)
 		}
+	}
+
+	{
+		bench_get_clock_points_world_space_naive :: proc() {
+			get_clock_points_world_space_naive()
+		}
+
+		bench_get_clock_points_world_space :: proc() {
+			get_clock_points_world_space()
+		}
+
+		benchmark_result := profile.simple_benchmark(bench_get_clock_points_world_space_naive)
+
+		fmt.println("Naive:", benchmark_result.duration)
+
+		benchmark_result = profile.simple_benchmark(bench_get_clock_points_world_space)
+
+		fmt.println("Faster:", benchmark_result.duration)
 	}
 
 	clock := get_clock_points_world_space()
