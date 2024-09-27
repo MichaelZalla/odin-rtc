@@ -14,19 +14,41 @@ main :: proc() {
 	defer rt.canvas_free(canvas)
 
 	get_clock_points_world_space :: proc() -> [dynamic]m.Point {
-		points: [dynamic]m.Point
+		reflect_over_x := m.mat4_scale(m.vector(1, -1, 1))
+		reflect_over_y := m.mat4_scale(m.vector(-1, 1, 1))
 
-		midnight := m.point(0, 1, 0)
+		twelve := m.point(0, 1, 0)
+		six := reflect_over_x * twelve
+		three := m.point(1, 0, 0)
+		nine := reflect_over_y * three
 
-		angle_theta_delta := linalg.TAU / 12
+		ANGLE_DELTA :: linalg.TAU / 12
+		rotate_hour_clockwise := m.mat4_rotate_z(-ANGLE_DELTA)
 
-		for i in 0 ..< 12 {
-			rotation := m.mat4_rotate_z(angle_theta_delta * f64(i))
+		one := rotate_hour_clockwise * twelve
+		five := reflect_over_x * one
+		eleven := reflect_over_y * one
+		seven := reflect_over_x * eleven
 
-			append(&points, rotation * midnight)
+		two := rotate_hour_clockwise * rotate_hour_clockwise * twelve
+		four := reflect_over_x * two
+		ten := reflect_over_y * two
+		eight := reflect_over_x * ten
+
+		return [dynamic]m.Point {
+			one,
+			two,
+			three,
+			four,
+			five,
+			six,
+			seven,
+			eight,
+			nine,
+			ten,
+			eleven,
+			twelve,
 		}
-
-		return points
 	}
 
 	plot_world_space_point :: proc(c: ^rt.Canvas, p_world: m.Point, color: rt.Color) {
