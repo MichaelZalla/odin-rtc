@@ -45,7 +45,7 @@ canvas_ppm_header :: proc(t: ^testing.T) {
 	c := rt.canvas(5, 3)
 	defer rt.canvas_free(c)
 
-	ppm := rt.canvas_to_ppm(&c)
+	ppm := rt.canvas_to_ppm_string(&c)
 	defer delete(ppm)
 
 	lines := strings.split_lines_n(ppm, 4)
@@ -71,7 +71,7 @@ canvas_ppm_pixel_data :: proc(t: ^testing.T) {
 	rt.canvas_pixel_set(&c, 2, 1, c2)
 	rt.canvas_pixel_set(&c, 4, 2, c3)
 
-	ppm := rt.canvas_to_ppm(&c)
+	ppm := rt.canvas_to_ppm_string(&c)
 	defer delete(ppm)
 
 	lines := strings.split_lines(ppm)
@@ -109,7 +109,7 @@ canvas_ppm_max_line_length :: proc(t: ^testing.T) {
 
 	rt.canvas_fill(&c, rt.color(1, 0.8, 0.6))
 
-	ppm := rt.canvas_to_ppm(&c)
+	ppm := rt.canvas_to_ppm_string(&c)
 	defer delete(ppm)
 
 	lines := strings.split_lines(ppm)
@@ -165,7 +165,7 @@ canvas_ppm_terminates_with_newline :: proc(t: ^testing.T) {
 
 	rt.canvas_fill(&c, rt.color(1, 0.8, 0.6))
 
-	ppm := rt.canvas_to_ppm(&c)
+	ppm := rt.canvas_to_ppm_string(&c)
 	defer delete(ppm)
 
 	last_byte := ppm[len(ppm) - 1]

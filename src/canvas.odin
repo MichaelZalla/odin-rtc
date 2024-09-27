@@ -2,6 +2,7 @@ package rt
 
 import "core:fmt"
 import math "core:math"
+import os "core:os"
 import "core:strings"
 
 Canvas :: struct {
@@ -50,7 +51,7 @@ canvas_fill :: proc(c: ^Canvas, color: Color) {
 	}
 }
 
-canvas_to_ppm :: proc(c: ^Canvas) -> string {
+canvas_to_ppm_string :: proc(c: ^Canvas) -> string {
 	sb := strings.builder_make()
 
 	// Writes PPM headers.
@@ -147,4 +148,12 @@ canvas_to_ppm :: proc(c: ^Canvas) -> string {
 	result := strings.to_string(sb)
 
 	return result
+}
+
+canvas_to_ppm_file :: proc(c: ^Canvas, path: string) -> bool {
+	ppm := canvas_to_ppm_string(c)
+
+	bytes := transmute([]u8)ppm
+
+	return os.write_entire_file(path, bytes[:])
 }

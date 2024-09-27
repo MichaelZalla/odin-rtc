@@ -6,6 +6,7 @@ import os "core:os"
 import "core:strings"
 
 import rt "../../../src"
+import fs "../../../src/fs"
 import m "../../../src/math"
 
 import chapter_01 "../chapter-01"
@@ -44,13 +45,7 @@ main :: proc() {
 		}
 	}
 
-	ppm := rt.canvas_to_ppm(&c)
+	path := fs.get_absolute_path("/examples/putting-it-together/chapter-02/projectile.ppm")
 
-	rel_path := "/examples/putting-it-together/chapter-02/projectile.ppm"
-	paths := [2]string{os.get_current_directory(), rel_path}
-	abs_path := strings.concatenate(paths[:])
-
-	bytes := transmute([]u8)ppm
-
-	success := os.write_entire_file(abs_path, bytes[:])
+	success := rt.canvas_to_ppm_file(&c, path)
 }
