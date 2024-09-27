@@ -48,5 +48,14 @@
       "label": "Odin: odin run examples/putting-it-together/chapter-02/main.odin -file --out=./bin/chapter-02",
       "command": "odin run examples/putting-it-together/chapter-02/main.odin -file --out=./bin/chapter-02"
     },
+		{
+      "type": "shell",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build"
+      },
+      "label": "Odin: odin run examples/putting-it-together/chapter-04/main.odin -file --out=./bin/chapter-04",
+      "command": "odin run examples/putting-it-together/chapter-04/main.odin -file --out=./bin/chapter-04"
+    },
   ]
 }
