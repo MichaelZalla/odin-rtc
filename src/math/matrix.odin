@@ -147,3 +147,28 @@ mat4_rotate_z :: proc(angle_radians: real) -> mat4 {
 
 	return mat4_rotate(Z_AXIS, angle_radians)
 }
+
+mat4_shear :: proc(x_per_y, x_per_z, y_per_x, y_per_z, z_per_x, z_per_y: real) -> mat4 {
+	return mat4 {
+		//
+		1,
+		x_per_y,
+		x_per_z,
+		0,
+		//
+		y_per_x,
+		1,
+		y_per_z,
+		0,
+		//
+		z_per_x,
+		z_per_y,
+		1,
+		0,
+		//
+		0,
+		0,
+		0,
+		1,
+	}
+}

@@ -480,3 +480,69 @@ mat4_rotate_z :: proc(t: ^testing.T) {
 	testing.expect(t, m.tuple_eq(half_quarter_z * p, m.point(-SQRT_2_OVER_2, SQRT_2_OVER_2, 0)))
 	testing.expect(t, m.tuple_eq(full_quarter_z * p, m.point(-1, 0, 0)))
 }
+
+@(test)
+mat4_shear_x_y :: proc(t: ^testing.T) {
+	// Scenario: A shearing transform can move X in proportion to Y.
+
+	shear := m.mat4_shear(1, 0, 0, 0, 0, 0)
+
+	p := m.point(2, 3, 4)
+
+	testing.expect(t, shear * p == m.point(5, 3, 4))
+}
+
+@(test)
+mat4_shear_x_z :: proc(t: ^testing.T) {
+	// Scenario: A shearing transform can move X in proportion to Z.
+
+	shear := m.mat4_shear(0, 1, 0, 0, 0, 0)
+
+	p := m.point(2, 3, 4)
+
+	testing.expect(t, shear * p == m.point(6, 3, 4))
+}
+
+@(test)
+mat4_shear_y_x :: proc(t: ^testing.T) {
+	// Scenario: A shearing transform can move Y in proportion to X.
+
+	shear := m.mat4_shear(0, 0, 1, 0, 0, 0)
+
+	p := m.point(2, 3, 4)
+
+	testing.expect(t, shear * p == m.point(2, 5, 4))
+}
+
+@(test)
+mat4_shear_y_z :: proc(t: ^testing.T) {
+	// Scenario: A shearing transform can move Y in proportion to Z.
+
+	shear := m.mat4_shear(0, 0, 0, 1, 0, 0)
+
+	p := m.point(2, 3, 4)
+
+	testing.expect(t, shear * p == m.point(2, 7, 4))
+}
+
+@(test)
+mat4_shear_z_x :: proc(t: ^testing.T) {
+	// Scenario: A shearing transform can move Z in proportion to X.
+
+	shear := m.mat4_shear(0, 0, 0, 0, 1, 0)
+
+	p := m.point(2, 3, 4)
+
+	testing.expect(t, shear * p == m.point(2, 3, 6))
+}
+
+@(test)
+mat4_shear_z_y :: proc(t: ^testing.T) {
+	// Scenario: A shearing transform can move Z in proportion to Y.
+
+	shear := m.mat4_shear(0, 0, 0, 0, 0, 1)
+
+	p := m.point(2, 3, 4)
+
+	testing.expect(t, shear * p == m.point(2, 3, 7))
+}
