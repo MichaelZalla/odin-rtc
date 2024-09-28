@@ -1,0 +1,16 @@
+package rt
+
+import m "math"
+
+Ray :: struct {
+	origin:    m.Point,
+	direction: m.Vector,
+}
+
+ray :: proc(origin: m.Point, direction: m.Vector) -> Ray {
+	return Ray{origin, direction}
+}
+
+position :: proc(ray: Ray, t: m.real) -> m.Point {
+	return ray.origin + m.Point(ray.direction * t)
+}
