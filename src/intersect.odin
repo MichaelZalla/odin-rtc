@@ -1,7 +1,7 @@
 package rt
 
-import log "core:log"
 import math "core:math"
+import linalg "core:math/linalg"
 
 import m "math"
 
@@ -22,10 +22,14 @@ intersections :: proc(intersections: ..Intersection) -> (result: [dynamic]Inters
 }
 
 intersect_sphere :: proc(sphere: ^Sphere, ray: Ray) -> [dynamic]Intersection {
-	sphere_to_ray := m.Vector(ray.origin - sphere.center)
+	inverse := m.mat4(linalg.matrix4_inverse(sphere.transform))
+	ray2 := ray_transform(ray, inverse)
 
-	a := m.dot(ray.direction, ray.direction)
-	b := m.dot(ray.direction, sphere_to_ray) * 2
+	// Computes the vector from the sphere's center to the ray's origin.
+	sphere_to_ray := m.Vector(ray2.origin - sphere.center)
+
+	a := m.dot(ray2.direction, ray2.direction)
+	b := m.dot(ray2.direction, sphere_to_ray) * 2
 	c := m.dot(sphere_to_ray, sphere_to_ray) - 1
 
 	two_a := 2 * a
