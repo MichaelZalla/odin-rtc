@@ -41,7 +41,7 @@ to_xyz :: proc(t: $T/Tuple) -> [3]real {
 
 // Point
 
-Point :: distinct Tuple
+Point :: Tuple
 
 point_xyz :: proc(x, y, z: real) -> Point {
 	return Point{x, y, z, 1}
@@ -62,7 +62,7 @@ is_point :: proc(t: $T/Tuple) -> bool {
 
 // Vector
 
-Vector :: distinct Tuple
+Vector :: Tuple
 
 vector_xyz :: proc(x, y, z: real) -> Vector {
 	return Vector{x, y, z, 0}

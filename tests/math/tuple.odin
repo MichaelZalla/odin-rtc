@@ -121,7 +121,7 @@ subtract_point_from_point :: proc(t: ^testing.T) {
 	p1 := m.point(3, 2, 1)
 	p2 := m.point(5, 6, 7)
 
-	difference := m.vector(m.Tuple(p1 - p2))
+	difference := m.vector(p1 - p2)
 	expected_difference := m.vector(-2, -4, -6)
 
 	testing.expect(t, m.tuple_eq(difference, expected_difference))
