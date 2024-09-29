@@ -6,6 +6,37 @@ import rt "../src"
 import m "../src/math"
 
 @(test)
+intersection_create :: proc(t: ^testing.T) {
+	// Scenario: An intersection encapsulate a t-value and an object.
+
+	s := rt.sphere()
+	i := rt.intersection(3.5, &s)
+
+	testing.expect(t, i.t == 3.5)
+	testing.expect(t, i.object == &s)
+}
+
+@(test)
+intersection_aggregate :: proc(t: ^testing.T) {
+	// Scenario: Aggregating multiple intersections.
+
+	s := rt.sphere()
+
+	i1 := rt.intersection(1, &s)
+	i2 := rt.intersection(2, &s)
+	i3 := rt.intersection(3, &s)
+
+	xs := rt.intersections(i1, i2, i3)
+	defer delete(xs)
+
+	testing.expect(t, len(xs) == 3)
+
+	testing.expect(t, xs[0].t == 1)
+	testing.expect(t, xs[1].t == 2)
+	testing.expect(t, xs[2].t == 3)
+}
+
+@(test)
 ray_sphere_intersect :: proc(t: ^testing.T) {
 	// Scenario: A ray intersects a sphere at two points.
 
@@ -37,13 +68,12 @@ ray_sphere_intersect :: proc(t: ^testing.T) {
 	//  						= 100 - 96
 	//  						= 4
 
-	did_hit, hits := rt.intersect(s, r)
-	defer delete(hits)
+	xs := rt.intersect(&s, r)
+	defer delete(xs)
 
-	testing.expect(t, did_hit)
-	testing.expect(t, len(hits) == 2)
-	testing.expectf(t, hits[0] == 4.0, "%v != %v", hits[0], 4.0)
-	testing.expectf(t, hits[1] == 6.0, "%v != %v", hits[1], 6.0)
+	testing.expect(t, len(xs) == 2)
+	testing.expectf(t, xs[0].t == 4.0, "%v != %v", xs[0].t, 4.0)
+	testing.expectf(t, xs[1].t == 6.0, "%v != %v", xs[1].t, 6.0)
 }
 
 @(test)
@@ -53,13 +83,12 @@ ray_sphere_intersect_tangent :: proc(t: ^testing.T) {
 	r := rt.ray(m.point(0, 1, -5), m.vector(0, 0, 1))
 	s := rt.sphere()
 
-	did_hit, hits := rt.intersect(s, r)
-	defer delete(hits)
+	xs := rt.intersect(&s, r)
+	defer delete(xs)
 
-	testing.expect(t, did_hit)
-	testing.expect(t, len(hits) == 2)
-	testing.expect(t, hits[0] == 5.0)
-	testing.expect(t, hits[1] == 5.0)
+	testing.expect(t, len(xs) == 2)
+	testing.expect(t, xs[0].t == 5.0)
+	testing.expect(t, xs[1].t == 5.0)
 }
 
 @(test)
@@ -69,12 +98,11 @@ ray_sphere_intersect_miss :: proc(t: ^testing.T) {
 	r := rt.ray(m.point(0, 2, -5), m.vector(0, 0, 1))
 	s := rt.sphere()
 
-	did_hit, hits := rt.intersect(s, r)
-	defer delete(hits)
+	xs := rt.intersect(&s, r)
+	defer delete(xs)
 
-	testing.expect(t, !did_hit)
-	testing.expect(t, hits == nil)
-	testing.expect(t, len(hits) == 0)
+	testing.expect(t, xs == nil)
+	testing.expect(t, len(xs) == 0)
 }
 
 @(test)
@@ -84,13 +112,12 @@ ray_sphere_intersect_inside :: proc(t: ^testing.T) {
 	r := rt.ray(m.point(0, 0, 0), m.vector(0, 0, 1))
 	s := rt.sphere()
 
-	did_hit, hits := rt.intersect(s, r)
-	defer delete(hits)
+	xs := rt.intersect(&s, r)
+	defer delete(xs)
 
-	testing.expect(t, did_hit)
-	testing.expect(t, len(hits) == 2)
-	testing.expect(t, hits[0] == -1.0)
-	testing.expect(t, hits[1] == 1.0)
+	testing.expect(t, len(xs) == 2)
+	testing.expect(t, xs[0].t == -1.0)
+	testing.expect(t, xs[1].t == 1.0)
 }
 
 @(test)
@@ -100,11 +127,10 @@ ray_sphere_intersect_behind :: proc(t: ^testing.T) {
 	r := rt.ray(m.point(0, 0, 5), m.vector(0, 0, 1))
 	s := rt.sphere()
 
-	did_hit, hits := rt.intersect(s, r)
-	defer delete(hits)
+	xs := rt.intersect(&s, r)
+	defer delete(xs)
 
-	testing.expect(t, did_hit)
-	testing.expect(t, len(hits) == 2)
-	testing.expect(t, hits[0] == -6.0)
-	testing.expect(t, hits[1] == -4.0)
+	testing.expect(t, len(xs) == 2)
+	testing.expect(t, xs[0].t == -6.0)
+	testing.expect(t, xs[1].t == -4.0)
 }

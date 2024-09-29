@@ -5,7 +5,23 @@ import math "core:math"
 
 import m "math"
 
-intersect_sphere :: proc(sphere: Sphere, ray: Ray) -> (bool, [dynamic]m.real) {
+Intersection :: struct {
+	t:      m.real,
+	object: ^Sphere,
+}
+
+intersection :: proc(t: m.real, object: ^Sphere) -> Intersection {
+	return Intersection{t, object}
+}
+
+intersections :: proc(intersections: ..Intersection) -> (result: [dynamic]Intersection) {
+	for i in intersections {
+		append(&result, i)
+	}
+	return
+}
+
+intersect_sphere :: proc(sphere: ^Sphere, ray: Ray) -> [dynamic]Intersection {
 	sphere_to_ray := m.Vector(ray.origin - sphere.center)
 
 	a := m.dot(ray.direction, ray.direction)
@@ -17,7 +33,7 @@ intersect_sphere :: proc(sphere: Sphere, ray: Ray) -> (bool, [dynamic]m.real) {
 	discriminant := b * b - 2 * two_a * c
 
 	if discriminant < 0 {
-		return false, nil
+		return nil
 	}
 
 	discriminant_sqrt := math.sqrt(discriminant)
@@ -25,7 +41,10 @@ intersect_sphere :: proc(sphere: Sphere, ray: Ray) -> (bool, [dynamic]m.real) {
 	r1 := (-b - discriminant_sqrt) / two_a
 	r2 := (-b + discriminant_sqrt) / two_a
 
-	return true, [dynamic]m.real{r1, r2}
+	i1 := Intersection{r1, sphere}
+	i2 := Intersection{r2, sphere}
+
+	return [dynamic]Intersection{i1, i2}
 }
 
 intersect :: proc {
