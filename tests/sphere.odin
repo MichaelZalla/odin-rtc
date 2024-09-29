@@ -1,6 +1,7 @@
 package tests
 
 import math "core:math"
+import linalg "core:math/linalg"
 import "core:testing"
 
 import rt "../src"
@@ -80,4 +81,46 @@ sphere_normal_is_normalized :: proc(t: ^testing.T) {
 	n := rt.sphere_normal_at(&s, m.point(sqrt_3_over_3, sqrt_3_over_3, sqrt_3_over_3))
 
 	testing.expect(t, m.norm(n) == n)
+}
+
+@(test)
+sphere_normal_translated :: proc(t: ^testing.T) {
+	// Scenario: Computing the normal on a translated sphere.
+
+	s := rt.sphere()
+
+	xf := m.mat4_translate(m.vector(0, 1, 0))
+	s.transform = xf
+
+	n := rt.sphere_normal_at(&s, m.point(0, 1.70711, -0.70711))
+
+	testing.expectf(
+		t,
+		m.tuple_eq(n, m.vector(0, 0.70711, -0.70711)),
+		"%v != %v",
+		n,
+		m.vector(0, 0.70711, -0.70711),
+	)
+}
+
+@(test)
+sphere_normal_rotated_and_scaled :: proc(t: ^testing.T) {
+	// Scenario: Computing the normal on a rotated and scaled sphere.
+
+	s := rt.sphere()
+
+	xf := m.mat4_scale(m.vector(1, 0.5, 1)) * m.mat4_rotate_z(linalg.PI / 5)
+	s.transform = xf
+
+	sqrt_2_over_2 := math.sqrt(m.real(2.0)) / 2
+
+	n := rt.sphere_normal_at(&s, m.point(0, sqrt_2_over_2, -sqrt_2_over_2))
+
+	testing.expectf(
+		t,
+		m.tuple_eq(n, m.vector(0, 0.97014, -0.24254)),
+		"%v != %v",
+		n,
+		m.vector(0, 0.97014, -0.24254),
+	)
 }

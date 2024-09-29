@@ -1,5 +1,7 @@
 package rt
 
+import linalg "core:math/linalg"
+
 import m "math"
 
 Sphere :: struct {
@@ -14,6 +16,15 @@ sphere :: proc() -> Sphere {
 
 sphere_normal_at :: proc(sphere: ^Sphere, point: m.Point) -> m.Vector {
 	// Note: Assumes that `point` does in fact sit on the sphere's surface.
+	// Note: Assumes that `sphere` is centered at the origin in object space.
 
-	return m.norm(point - sphere.center)
+	point_object_space := linalg.matrix4_inverse(sphere.transform) * point
+
+	normal_object_space := m.norm(point_object_space - m.point(0, 0, 0))
+
+	normal_world_space := linalg.matrix4_inverse_transpose(sphere.transform) * normal_object_space
+
+	normal_world_space.w = 0
+
+	return m.norm(normal_world_space)
 }
