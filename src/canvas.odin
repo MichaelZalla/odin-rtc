@@ -5,18 +5,26 @@ import math "core:math"
 import os "core:os"
 import "core:strings"
 
+import m "math"
+
 Canvas :: struct {
-	width:  int,
-	height: int,
-	pixels: []Color,
+	width:        int,
+	height:       int,
+	aspect_ratio: m.real,
+	center:       m.Point,
+	pixels:       []Color,
 }
 
 canvas_width_height :: proc(width, height: int) -> Canvas {
+	center := m.point(m.real(width) / 2, m.real(height) / 2, 0)
+
+	aspect_ratio := m.real(width) / m.real(height)
+
 	black := color(0, 0, 0)
 
 	pixels := make([]Color, width * height)
 
-	return Canvas{width, height, pixels}
+	return Canvas{width, height, aspect_ratio, center, pixels}
 }
 
 canvas :: proc {

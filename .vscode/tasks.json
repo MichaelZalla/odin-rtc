@@ -27,8 +27,8 @@
         "kind": "test",
         "isDefault": true
       },
-      "label": "Odin: odin test tests -all-packages",
-      "command": "odin test tests -all-packages"
+      "label": "Odin: odin test tests -all-packages --out=./bin/tests",
+      "command": "odin test tests -all-packages --out=./bin/tests"
     },
     {
       "type": "shell",
@@ -56,6 +56,15 @@
       },
       "label": "Odin: odin run examples/putting-it-together/chapter-04/main.odin -file --out=./bin/chapter-04",
       "command": "odin run examples/putting-it-together/chapter-04/main.odin -file --out=./bin/chapter-04"
+    },
+		{
+      "type": "shell",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build"
+      },
+      "label": "Odin: odin run examples/putting-it-together/chapter-05/main.odin -file --out=./bin/chapter-05",
+      "command": "odin run examples/putting-it-together/chapter-05/main.odin -file --out=./bin/chapter-05"
     },
   ]
 }
