@@ -278,3 +278,27 @@ vector_cross_product :: proc(t: ^testing.T) {
 	testing.expect(t, m.tuple_eq(m.cross(a, b), m.vector(-1, 2, -1)))
 	testing.expect(t, m.tuple_eq(m.cross(b, a), m.vector(1, -2, 1)))
 }
+
+@(test)
+vector_reflect_45 :: proc(t: ^testing.T) {
+	// Scenario: Reflecting a vector approaching 45 degrees.
+
+	v := m.vector(1, -1, 0)
+	n := m.vector(0, 1, 0)
+	r := m.reflect(v, n)
+
+	testing.expect(t, r == m.vector(1, 1, 0))
+}
+
+@(test)
+vector_reflect_slanted :: proc(t: ^testing.T) {
+	// Scenario: Reflecting a vector off a slanted surface.
+
+	sqrt_2_over_2 := math.sqrt(m.real(2.0)) / 2
+
+	v := m.vector(0, -1, 0)
+	n := m.vector(sqrt_2_over_2, sqrt_2_over_2, 0)
+	r := m.reflect(v, n)
+
+	testing.expectf(t, m.tuple_eq(r, m.vector(1, 0, 0)), "%v != %v", r, m.vector(1, 0, 0))
+}

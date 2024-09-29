@@ -98,3 +98,8 @@ dot :: proc(a: Vector, b: Vector) -> real {
 cross :: proc(a: Vector, b: Vector) -> Vector {
 	return vector(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
 }
+
+reflect :: proc(v_in: Vector, normal: Vector) -> (v_out: Vector) {
+	v_out = v_in - (normal * 2 * dot(v_in, normal))
+	return
+}
