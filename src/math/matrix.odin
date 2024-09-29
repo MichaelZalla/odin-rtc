@@ -2,11 +2,11 @@ package rt_math
 
 import linalg "core:math/linalg"
 
-mat2 :: distinct matrix[2, 2]real
-mat3 :: distinct matrix[3, 3]real
-mat4 :: distinct matrix[4, 4]real
+Mat2 :: distinct matrix[2, 2]real
+Mat3 :: distinct matrix[3, 3]real
+Mat4 :: distinct matrix[4, 4]real
 
-mat3_eq :: proc(lhs: ^mat3, rhs: ^mat3) -> bool {
+mat3_eq :: proc(lhs: ^Mat3, rhs: ^Mat3) -> bool {
 	dimension :: 3
 
 	for c in 0 ..< dimension {
@@ -22,7 +22,7 @@ mat3_eq :: proc(lhs: ^mat3, rhs: ^mat3) -> bool {
 	return true
 }
 
-mat4_eq :: proc(lhs: ^mat4, rhs: ^mat4) -> bool {
+mat4_eq :: proc(lhs: ^Mat4, rhs: ^Mat4) -> bool {
 	dimension :: 4
 
 	for c in 0 ..< dimension {
@@ -38,10 +38,10 @@ mat4_eq :: proc(lhs: ^mat4, rhs: ^mat4) -> bool {
 	return true
 }
 
-mat3_submatrix :: proc(a: ^mat3, row: int, column: int) -> mat2 {
+mat3_submatrix :: proc(a: ^Mat3, row: int, column: int) -> Mat2 {
 	dimension :: 3
 
-	result := mat2{}
+	result := Mat2{}
 
 	assert(column < dimension && row < dimension)
 
@@ -70,10 +70,10 @@ mat3_submatrix :: proc(a: ^mat3, row: int, column: int) -> mat2 {
 	return result
 }
 
-mat4_submatrix :: proc(a: ^mat4, row: int, column: int) -> mat3 {
+mat4_submatrix :: proc(a: ^Mat4, row: int, column: int) -> Mat3 {
 	dimension :: 4
 
-	result := mat3{}
+	result := Mat3{}
 
 	assert(column < dimension && row < dimension)
 
@@ -102,7 +102,7 @@ mat4_submatrix :: proc(a: ^mat4, row: int, column: int) -> mat3 {
 	return result
 }
 
-mat3_cofactor :: proc(a: mat3, row: int, column: int) -> real {
+mat3_cofactor :: proc(a: Mat3, row: int, column: int) -> real {
 	sign, minor: real
 
 	sign = 1 if (row + column) % 2 == 0 else -1
@@ -112,22 +112,22 @@ mat3_cofactor :: proc(a: mat3, row: int, column: int) -> real {
 	return minor * sign
 }
 
-mat4_invertible :: proc(a: mat4) -> bool {
+mat4_invertible :: proc(a: Mat4) -> bool {
 	determinant := linalg.determinant(a)
 
 	return determinant != 0
 }
 
-mat4_translate :: proc(v: Vector) -> mat4 {
-	return mat4(linalg.matrix4_translate(to_xyz(v)))
+mat4_translate :: proc(v: Vector) -> Mat4 {
+	return Mat4(linalg.matrix4_translate(to_xyz(v)))
 }
 
-mat4_scale_uniform :: proc(s: real) -> mat4 {
-	return mat4(linalg.matrix4_scale([3]real{s, s, s}))
+mat4_scale_uniform :: proc(s: real) -> Mat4 {
+	return Mat4(linalg.matrix4_scale([3]real{s, s, s}))
 }
 
-mat4_scale_vector :: proc(v: Vector) -> mat4 {
-	return mat4(linalg.matrix4_scale(to_xyz(v)))
+mat4_scale_vector :: proc(v: Vector) -> Mat4 {
+	return Mat4(linalg.matrix4_scale(to_xyz(v)))
 }
 
 mat4_scale :: proc {
@@ -135,30 +135,30 @@ mat4_scale :: proc {
 	mat4_scale_vector,
 }
 
-mat4_rotate :: proc(axis: Vector, angle_radians: real) -> mat4 {
-	return mat4(linalg.matrix4_rotate(angle_radians, to_xyz(axis)))
+mat4_rotate :: proc(axis: Vector, angle_radians: real) -> Mat4 {
+	return Mat4(linalg.matrix4_rotate(angle_radians, to_xyz(axis)))
 }
 
-mat4_rotate_x :: proc(angle_radians: real) -> mat4 {
+mat4_rotate_x :: proc(angle_radians: real) -> Mat4 {
 	X_AXIS :: Vector{1, 0, 0, 0}
 
 	return mat4_rotate(X_AXIS, angle_radians)
 }
 
-mat4_rotate_y :: proc(angle_radians: real) -> mat4 {
+mat4_rotate_y :: proc(angle_radians: real) -> Mat4 {
 	Y_AXIS :: Vector{0, 1, 0, 0}
 
 	return mat4_rotate(Y_AXIS, angle_radians)
 }
 
-mat4_rotate_z :: proc(angle_radians: real) -> mat4 {
+mat4_rotate_z :: proc(angle_radians: real) -> Mat4 {
 	Z_AXIS :: Vector{0, 0, 1, 0}
 
 	return mat4_rotate(Z_AXIS, angle_radians)
 }
 
-mat4_shear :: proc(x_per_y, x_per_z, y_per_x, y_per_z, z_per_x, z_per_y: real) -> mat4 {
-	return mat4 {
+mat4_shear :: proc(x_per_y, x_per_z, y_per_x, y_per_z, z_per_x, z_per_y: real) -> Mat4 {
+	return Mat4 {
 		//
 		1,
 		x_per_y,
@@ -182,8 +182,8 @@ mat4_shear :: proc(x_per_y, x_per_z, y_per_x, y_per_z, z_per_x, z_per_y: real) -
 	}
 }
 
-mat4_reverse_concat :: proc(transforms: [dynamic]mat4) -> mat4 {
-	identity: mat4 = 1
+mat4_reverse_concat :: proc(transforms: [dynamic]Mat4) -> Mat4 {
+	identity: Mat4 = 1
 
 	t := identity
 

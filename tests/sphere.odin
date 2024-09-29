@@ -10,7 +10,7 @@ sphere_transform_default :: proc(t: ^testing.T) {
 	// Scenario: A sphere's default transform.
 
 	s := rt.sphere()
-	identity: m.mat4 = 1
+	identity: m.Mat4 = 1
 
 	testing.expect(t, s.transform == identity)
 }

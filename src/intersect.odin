@@ -22,7 +22,7 @@ intersections :: proc(intersections: ..Intersection) -> (result: [dynamic]Inters
 }
 
 intersect_sphere :: proc(sphere: ^Sphere, ray: Ray) -> [dynamic]Intersection {
-	inverse := m.mat4(linalg.matrix4_inverse(sphere.transform))
+	inverse := m.Mat4(linalg.matrix4_inverse(sphere.transform))
 	ray2 := ray_transform(ray, inverse)
 
 	// Computes the vector from the sphere's center to the ray's origin.

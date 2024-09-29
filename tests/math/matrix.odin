@@ -16,7 +16,7 @@ SQRT_2_OVER_2 :: linalg.SQRT_TWO / 2
 make_mat4 :: proc(t: ^testing.T) {
 	// Scenario: Constructing and inspecting a 4x4 matrix.
 
-	a := m.mat4{1, 2, 3, 4, 5.5, 6.5, 7.5, 8.5, 9, 10, 11, 12, 13.5, 14.5, 15.5, 16.5}
+	a := m.Mat4{1, 2, 3, 4, 5.5, 6.5, 7.5, 8.5, 9, 10, 11, 12, 13.5, 14.5, 15.5, 16.5}
 
 	testing.expect(t, a[0, 3] == 4)
 	testing.expect(t, a[1, 0] == 5.5)
@@ -30,7 +30,7 @@ make_mat4 :: proc(t: ^testing.T) {
 make_mat2 :: proc(t: ^testing.T) {
 	// Scenario: Represent a 2x2 matrix.
 
-	a := m.mat2{-3, 5, 1, -2}
+	a := m.Mat2{-3, 5, 1, -2}
 
 	testing.expect(t, a[0, 0] == -3)
 	testing.expect(t, a[0, 1] == 5)
@@ -42,7 +42,7 @@ make_mat2 :: proc(t: ^testing.T) {
 make_mat3 :: proc(t: ^testing.T) {
 	// Scenario: Represent a 3x4 matrix.
 
-	a := m.mat3{-3, 5, 0, 1, -2, -7, 0, 1, 1}
+	a := m.Mat3{-3, 5, 0, 1, -2, -7, 0, 1, 1}
 
 	testing.expect(t, a[0, 0] == -3)
 	testing.expect(t, a[1, 1] == -2)
@@ -53,8 +53,8 @@ make_mat3 :: proc(t: ^testing.T) {
 mat4_equality_for_identical :: proc(t: ^testing.T) {
 	// Scenario: Matrix equality with identical matrices.
 
-	a := m.mat4{1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2}
-	b := m.mat4{1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2}
+	a := m.Mat4{1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2}
+	b := m.Mat4{1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2}
 
 	testing.expect(t, a == b)
 }
@@ -63,8 +63,8 @@ mat4_equality_for_identical :: proc(t: ^testing.T) {
 mat4_equality_for_non_identical :: proc(t: ^testing.T) {
 	// Scenario: Matrix equality with different matrices.
 
-	a := m.mat4{1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2}
-	b := m.mat4{2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1}
+	a := m.Mat4{1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2}
+	b := m.Mat4{2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1}
 
 	testing.expect(t, a != b)
 }
@@ -73,11 +73,11 @@ mat4_equality_for_non_identical :: proc(t: ^testing.T) {
 mat4_multiply_mat4 :: proc(t: ^testing.T) {
 	// Scenario: Multiplying two 4x4 matrices.
 
-	a := m.mat4{1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2}
-	b := m.mat4{-2, 1, 2, 3, 3, 2, 1, -1, 4, 3, 6, 5, 1, 2, 7, 8}
+	a := m.Mat4{1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2}
+	b := m.Mat4{-2, 1, 2, 3, 3, 2, 1, -1, 4, 3, 6, 5, 1, 2, 7, 8}
 
 	product := a * b
-	expected_product := m.mat4{20, 22, 50, 48, 44, 54, 114, 108, 40, 58, 110, 102, 16, 26, 46, 42}
+	expected_product := m.Mat4{20, 22, 50, 48, 44, 54, 114, 108, 40, 58, 110, 102, 16, 26, 46, 42}
 
 	testing.expectf(t, product == expected_product, "%v != %v", product, expected_product)
 }
@@ -86,7 +86,7 @@ mat4_multiply_mat4 :: proc(t: ^testing.T) {
 mat4_multiply_tuple :: proc(t: ^testing.T) {
 	// Scenario: A 4x4 matrix multiplied by a tuple.
 
-	a := m.mat4{1, 2, 3, 4, 2, 4, 4, 2, 8, 6, 4, 1, 0, 0, 0, 1}
+	a := m.Mat4{1, 2, 3, 4, 2, 4, 4, 2, 8, 6, 4, 1, 0, 0, 0, 1}
 	b := m.tuple(1, 2, 3, 1)
 
 	product := a * b
@@ -99,12 +99,12 @@ mat4_multiply_tuple :: proc(t: ^testing.T) {
 mat4_multiply_identity :: proc(t: ^testing.T) {
 	// Scenario: Multiplying a 4x4 matrix by the identity matrix.
 
-	a := m.mat4{0, 1, 2, 4, 1, 2, 4, 8, 2, 4, 8, 16, 4, 8, 16, 32}
+	a := m.Mat4{0, 1, 2, 4, 1, 2, 4, 8, 2, 4, 8, 16, 4, 8, 16, 32}
 
-	identity: m.mat4 = 1
+	identity: m.Mat4 = 1
 
 	product := a * identity
-	expected_product := m.mat4{0, 1, 2, 4, 1, 2, 4, 8, 2, 4, 8, 16, 4, 8, 16, 32}
+	expected_product := m.Mat4{0, 1, 2, 4, 1, 2, 4, 8, 2, 4, 8, 16, 4, 8, 16, 32}
 
 	testing.expectf(t, product == expected_product, "%v != %v", product, expected_product)
 }
@@ -114,10 +114,10 @@ mat4_multiply_identity :: proc(t: ^testing.T) {
 mat4_transpose :: proc(t: ^testing.T) {
 	// Scenario: Transposing a 4x4 matrix.
 
-	a := m.mat4{0, 9, 3, 0, 9, 8, 0, 8, 1, 8, 5, 3, 0, 0, 5, 8}
+	a := m.Mat4{0, 9, 3, 0, 9, 8, 0, 8, 1, 8, 5, 3, 0, 0, 5, 8}
 
 	transpose := intrinsics.transpose(a)
-	expected_transpose := m.mat4{0, 9, 1, 0, 9, 8, 8, 0, 3, 0, 5, 5, 0, 8, 3, 8}
+	expected_transpose := m.Mat4{0, 9, 1, 0, 9, 8, 8, 0, 3, 0, 5, 5, 0, 8, 3, 8}
 
 	testing.expectf(t, transpose == expected_transpose, "%v != %v", transpose, expected_transpose)
 }
@@ -126,10 +126,10 @@ mat4_transpose :: proc(t: ^testing.T) {
 mat4_transpose_of_identity :: proc(t: ^testing.T) {
 	// Scenario: Transposing the 4x4 identity matrix.
 
-	identity: m.mat4 = 1
+	identity: m.Mat4 = 1
 
 	transpose := intrinsics.transpose(identity)
-	expected_transpose: m.mat4 = 1
+	expected_transpose: m.Mat4 = 1
 
 	testing.expectf(t, transpose == expected_transpose, "%v != %v", transpose, expected_transpose)
 }
@@ -138,7 +138,7 @@ mat4_transpose_of_identity :: proc(t: ^testing.T) {
 mat2_determinant :: proc(t: ^testing.T) {
 	// Scenario: Calculating the determinant of a 2x2 matrix.
 
-	a := m.mat2{1, 5, -3, 2}
+	a := m.Mat2{1, 5, -3, 2}
 
 	testing.expect(t, linalg.determinant(a) == 17)
 }
@@ -147,10 +147,10 @@ mat2_determinant :: proc(t: ^testing.T) {
 mat3_submatrix :: proc(t: ^testing.T) {
 	// Scenario: A submatrix of a 3x3 matrix is a 2x2 matrix.
 
-	a := m.mat3{1, 5, 0, -3, 2, 7, 0, 6, -3}
+	a := m.Mat3{1, 5, 0, -3, 2, 7, 0, 6, -3}
 
 	submatrix := m.mat3_submatrix(&a, 0, 2)
-	expected_submatrix := m.mat2{-3, 2, 0, 6}
+	expected_submatrix := m.Mat2{-3, 2, 0, 6}
 
 	testing.expectf(t, submatrix == expected_submatrix, "%v != %v", submatrix, expected_submatrix)
 }
@@ -159,10 +159,10 @@ mat3_submatrix :: proc(t: ^testing.T) {
 mat4_submatrix :: proc(t: ^testing.T) {
 	// Scenario: A submatrix of a 4x4 matrix is a 2x2 matrix.
 
-	a := m.mat4{-6, 1, 1, 6, -8, 5, 8, 6, -1, 0, 8, 2, -7, 1, -1, 1}
+	a := m.Mat4{-6, 1, 1, 6, -8, 5, 8, 6, -1, 0, 8, 2, -7, 1, -1, 1}
 
 	submatrix := m.mat4_submatrix(&a, 2, 1)
-	expected_submatrix := m.mat3{-6, 1, 6, -8, 8, 6, -7, -1, 1}
+	expected_submatrix := m.Mat3{-6, 1, 6, -8, 8, 6, -7, -1, 1}
 
 	testing.expectf(t, submatrix == expected_submatrix, "%v != %v", submatrix, expected_submatrix)
 }
@@ -171,7 +171,7 @@ mat4_submatrix :: proc(t: ^testing.T) {
 mat3_minor :: proc(t: ^testing.T) {
 	// Scenario: Calculating a minor of a 3x3 matrix.
 
-	a := m.mat3{3, 5, 0, 2, -1, -7, 6, -1, 5}
+	a := m.Mat3{3, 5, 0, 2, -1, -7, 6, -1, 5}
 
 	submatrix := m.mat3_submatrix(&a, 1, 0)
 
@@ -184,7 +184,7 @@ mat3_minor :: proc(t: ^testing.T) {
 mat3_cofactor :: proc(t: ^testing.T) {
 	// Scenario: Calculating a cofactor of a 3x3 matrix.
 
-	a := m.mat3{3, 5, 0, 2, -1, -7, 6, -1, 5}
+	a := m.Mat3{3, 5, 0, 2, -1, -7, 6, -1, 5}
 
 	testing.expect(t, linalg.matrix_minor(a, 0, 0) == -12)
 	testing.expect(t, m.mat3_cofactor(a, 0, 0) == -12)
@@ -197,7 +197,7 @@ mat3_cofactor :: proc(t: ^testing.T) {
 mat4_cofactor :: proc(t: ^testing.T) {
 	// Scenario: Calculating a cofactor of a 4x4 matrix.
 
-	a := m.mat4{-2, -8, 3, 5, -3, 1, 7, 3, 1, 2, -9, 6, -6, 7, 7, -9}
+	a := m.Mat4{-2, -8, 3, 5, -3, 1, 7, 3, 1, 2, -9, 6, -6, 7, 7, -9}
 
 	testing.expect(t, linalg.matrix4_cofactor(a, 0, 0) == 690)
 	testing.expect(t, linalg.matrix4_cofactor(a, 1, 0) == 447)
@@ -211,7 +211,7 @@ mat4_cofactor :: proc(t: ^testing.T) {
 mat4_test_invertible_for_invertibility :: proc(t: ^testing.T) {
 	// Scenario: Testing an invertible matrix for invertibility.
 
-	a := m.mat4{6, 4, 4, 4, 5, 5, 7, 6, 4, -9, 3, -7, 9, 1, 7, -6}
+	a := m.Mat4{6, 4, 4, 4, 5, 5, 7, 6, 4, -9, 3, -7, 9, 1, 7, -6}
 
 	testing.expect(t, linalg.determinant(a) == -2120)
 	testing.expect(t, m.mat4_invertible(a))
@@ -221,7 +221,7 @@ mat4_test_invertible_for_invertibility :: proc(t: ^testing.T) {
 mat4_test_noninvertible_for_invertibility :: proc(t: ^testing.T) {
 	// Scenario: Testing a non-invertible matrix for invertibility.
 
-	a := m.mat4{-4, 2, -2, -3, 9, 6, 2, 6, 0, -5, 1, -5, 0, 0, 0, 0}
+	a := m.Mat4{-4, 2, -2, -3, 9, 6, 2, 6, 0, -5, 1, -5, 0, 0, 0, 0}
 
 	testing.expect(t, linalg.determinant(a) == 0)
 	testing.expect(t, m.mat4_invertible(a) == false)
@@ -231,11 +231,11 @@ mat4_test_noninvertible_for_invertibility :: proc(t: ^testing.T) {
 mat4_inverse_1 :: proc(t: ^testing.T) {
 	// Scenario: Calculating the inverse of a 4x4 matrix.
 
-	a := m.mat4{-5, 2, 6, -8, 1, -5, 1, 8, 7, 7, -6, -7, 1, -3, 7, 4}
+	a := m.Mat4{-5, 2, 6, -8, 1, -5, 1, 8, 7, 7, -6, -7, 1, -3, 7, 4}
 
-	inverse := m.mat4(linalg.matrix4_inverse(a))
+	inverse := m.Mat4(linalg.matrix4_inverse(a))
 
-	expected_inverse := m.mat4 {
+	expected_inverse := m.Mat4 {
 		0.21805,
 		0.45113,
 		0.24060,
@@ -289,11 +289,11 @@ mat4_inverse_1 :: proc(t: ^testing.T) {
 mat4_inverse_2 :: proc(t: ^testing.T) {
 	// Scenario: Calculating the inverse of a second 4x4 matrix.
 
-	a := m.mat4{8, -5, 9, 2, 7, 5, 6, 1, -6, 0, 9, 6, -3, 0, -9, -4}
+	a := m.Mat4{8, -5, 9, 2, 7, 5, 6, 1, -6, 0, 9, 6, -3, 0, -9, -4}
 
-	inverse := m.mat4(linalg.inverse(a))
+	inverse := m.Mat4(linalg.inverse(a))
 
-	expected_inverse := m.mat4 {
+	expected_inverse := m.Mat4 {
 		-0.15385,
 		-0.15385,
 		-0.28205,
@@ -325,13 +325,13 @@ mat4_inverse_2 :: proc(t: ^testing.T) {
 mat4_inverse_3 :: proc(t: ^testing.T) {
 	// Scenario: Calculating the inverse of a third 4x4 matrix.
 
-	a := m.mat4{3, -9, 7, 3, 3, -8, 2, -9, -4, 4, 4, 1, -6, 5, -1, 1}
+	a := m.Mat4{3, -9, 7, 3, 3, -8, 2, -9, -4, 4, 4, 1, -6, 5, -1, 1}
 
-	b := m.mat4{8, 2, 2, 2, 3, -1, 7, 0, 7, 0, 5, 4, 6, -2, 0, 5}
+	b := m.Mat4{8, 2, 2, 2, 3, -1, 7, 0, 7, 0, 5, 4, 6, -2, 0, 5}
 
 	product := a * b
 
-	original := product * m.mat4(linalg.inverse(b))
+	original := product * m.Mat4(linalg.inverse(b))
 
 	expected_original := a
 
@@ -348,7 +348,7 @@ mat4_inverse_3 :: proc(t: ^testing.T) {
 mat4_translate_point :: proc(t: ^testing.T) {
 	// Scenario: Multiplying by a 4x4 translation matrix.
 
-	transform := m.mat4(linalg.matrix4_translate([3]m.real{5, -3, 2}))
+	transform := m.Mat4(linalg.matrix4_translate([3]m.real{5, -3, 2}))
 
 	p := m.point(-3, 4, 5)
 
@@ -362,8 +362,8 @@ mat4_translate_point :: proc(t: ^testing.T) {
 mat4_translate_inverse_point :: proc(t: ^testing.T) {
 	// Scenario: Multiplying by the inverse of a 4x4 translation matrix.
 
-	transform := m.mat4(linalg.matrix4_translate([3]m.real{5, -3, 2}))
-	inverse := m.mat4(linalg.matrix4_inverse(transform))
+	transform := m.Mat4(linalg.matrix4_translate([3]m.real{5, -3, 2}))
+	inverse := m.Mat4(linalg.matrix4_inverse(transform))
 
 	p := m.point(-3, 4, 5)
 
@@ -411,7 +411,7 @@ mat4_scale_inverse :: proc(t: ^testing.T) {
 	// Scenario: Multiplying by the inverse of a 4x4 scaling matrix.
 
 	scale := m.mat4_scale(m.vector(2, 3, 4))
-	scale_inverse := m.mat4(linalg.matrix4_inverse(scale))
+	scale_inverse := m.Mat4(linalg.matrix4_inverse(scale))
 
 	v := m.vector(-4, 6, 8)
 
@@ -450,7 +450,7 @@ mat4_rotate_inverse_x :: proc(t: ^testing.T) {
 
 	half_quarter_x := m.mat4_rotate_x(PI_OVER_4)
 
-	inverse := m.mat4(linalg.matrix4_inverse(half_quarter_x))
+	inverse := m.Mat4(linalg.matrix4_inverse(half_quarter_x))
 
 	testing.expect(t, m.tuple_eq(inverse * p, m.point(0, SQRT_2_OVER_2, -SQRT_2_OVER_2)))
 }
@@ -555,7 +555,7 @@ mat4_transform_single :: proc(t: ^testing.T) {
 
 	rotate := m.mat4_rotate_x(PI_OVER_2)
 	scale := m.mat4_scale(5)
-	translate := m.mat4(linalg.matrix4_translate(m.to_xyz(m.vector(10, 5, 7))))
+	translate := m.Mat4(linalg.matrix4_translate(m.to_xyz(m.vector(10, 5, 7))))
 
 	p2 := rotate * p
 
@@ -578,9 +578,9 @@ mat4_transform_multiple :: proc(t: ^testing.T) {
 
 	rotate := m.mat4_rotate_x(PI_OVER_2)
 	scale := m.mat4_scale(5)
-	translate := m.mat4(linalg.matrix4_translate(m.to_xyz(m.vector(10, 5, 7))))
+	translate := m.Mat4(linalg.matrix4_translate(m.to_xyz(m.vector(10, 5, 7))))
 
-	transforms: [dynamic]m.mat4 = {translate, scale, rotate}
+	transforms: [dynamic]m.Mat4 = {translate, scale, rotate}
 	defer delete(transforms)
 
 	combined := m.mat4_reverse_concat(transforms)

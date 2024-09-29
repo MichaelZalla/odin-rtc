@@ -5,7 +5,7 @@ import m "math"
 Sphere :: struct {
 	center:    m.Point,
 	radius:    m.real,
-	transform: m.mat4,
+	transform: m.Mat4,
 }
 
 sphere :: proc() -> Sphere {
