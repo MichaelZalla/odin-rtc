@@ -6,6 +6,13 @@ import m "math"
 
 Color :: distinct m.Tuple
 
+Black :: Color{0, 0, 0, 0}
+White :: Color{1, 1, 1, 0}
+
+color_scalar :: proc(v: m.real) -> Color {
+	return Color{v, v, v, 0}
+}
+
 color_rgb :: proc(r, g, b: m.real) -> Color {
 	return Color{r, g, b, 0}
 }
@@ -15,6 +22,7 @@ color_tuple :: proc(t: $T/m.Tuple) -> Color {
 }
 
 color :: proc {
+	color_scalar,
 	color_rgb,
 	color_tuple,
 }

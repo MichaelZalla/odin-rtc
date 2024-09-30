@@ -8,10 +8,11 @@ Sphere :: struct {
 	center:    m.Point,
 	radius:    m.real,
 	transform: m.Mat4,
+	material:  Material,
 }
 
 sphere :: proc() -> Sphere {
-	return Sphere{m.point(0, 0, 0), 1, 1}
+	return Sphere{m.point(0, 0, 0), 1, 1, material()}
 }
 
 sphere_normal_at :: proc(sphere: ^Sphere, point: m.Point) -> m.Vector {
