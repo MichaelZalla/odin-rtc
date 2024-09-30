@@ -11,7 +11,7 @@ point_light_create :: proc(t: ^testing.T) {
 	// Scenario: A point light has a position and an intensity.
 
 	position := m.point(0, 0, 0)
-	intensity := rt.color(1, 1, 1)
+	intensity := rt.White
 
 	light := rt.point_light(position, intensity)
 

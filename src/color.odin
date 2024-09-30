@@ -9,6 +9,10 @@ Color :: distinct m.Tuple
 Black :: Color{0, 0, 0, 0}
 White :: Color{1, 1, 1, 0}
 
+Red :: Color{1, 0, 0, 0}
+Green :: Color{0, 1, 0, 0}
+Blue :: Color{0, 0, 1, 0}
+
 color_scalar :: proc(v: m.real) -> Color {
 	return Color{v, v, v, 0}
 }
