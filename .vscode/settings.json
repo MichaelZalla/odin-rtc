@@ -1,5 +1,7 @@
 {
 	"[odin]": {
 		"editor.formatOnSave": true
-	}
+	},
+	"ppm-pgm-viewer-for-vscode.imagepreview.autoScalingMode": true,
+	"ppm-pgm-viewer-for-vscode.imagepreview.hidePanel": true,
 }
