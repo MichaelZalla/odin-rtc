@@ -87,3 +87,46 @@ ray_intersect_translated_sphere :: proc(t: ^testing.T) {
 	testing.expect(t, len(xs) == 0)
 	testing.expect(t, xs == nil)
 }
+
+@(test)
+precompute_intersection_outside :: proc(t: ^testing.T) {
+	// Scenario: Precomputing the state of an intersection.
+	// Note: The ray (eye) sits outside of the object being intersected.
+
+	r := rt.ray(m.point(0, 0, -5), m.vector(0, 0, 1))
+
+	object := rt.sphere()
+
+	i := rt.intersection(4, &object)
+
+	comps := rt.ray_prepare_computations(r, i)
+
+	testing.expect(t, comps.t == i.t)
+	testing.expect(t, comps.object == i.object)
+	testing.expect(t, comps.point == m.point(0, 0, -1))
+	testing.expect(t, comps.eye == m.vector(0, 0, -1))
+	testing.expect(t, comps.normal == m.vector(0, 0, -1))
+	testing.expect(t, !comps.inside)
+}
+
+@(test)
+precompute_intersection_inside :: proc(t: ^testing.T) {
+	// Scenario: Precomputing the state of an intersection.
+	// Note: The ray (eye) sits inside of the object being intersected; as a
+	// result, the normal returned by `ray_prepare_computations()` is flipped.
+
+	r := rt.ray(m.point(0, 0, 0), m.vector(0, 0, 1))
+
+	object := rt.sphere()
+
+	i := rt.intersection(1, &object)
+
+	comps := rt.ray_prepare_computations(r, i)
+
+	testing.expect(t, comps.t == i.t)
+	testing.expect(t, comps.object == i.object)
+	testing.expect(t, comps.point == m.point(0, 0, 1))
+	testing.expect(t, comps.eye == m.vector(0, 0, -1))
+	testing.expect(t, comps.normal == m.vector(0, 0, -1))
+	testing.expect(t, comps.inside)
+}

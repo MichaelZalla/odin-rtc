@@ -18,3 +18,25 @@ position :: proc(ray: Ray, t: m.real) -> m.Point {
 ray_transform :: proc(ray: Ray, transform: m.Mat4) -> Ray {
 	return Ray{transform * ray.origin, transform * ray.direction}
 }
+
+RayIntersectionResult :: struct {
+	point:  m.Point,
+	eye:    m.Vector,
+	normal: m.Vector,
+	t:      m.real,
+	object: ^Sphere,
+	inside: bool,
+}
+
+ray_prepare_computations :: proc(ray: Ray, intersection: Intersection) -> RayIntersectionResult {
+	point := position(ray, intersection.t)
+	eye := -ray.direction
+	normal := sphere_normal_at(intersection.object, point)
+	inside := m.dot(eye, normal) < 0
+
+	if inside {
+		normal = -normal
+	}
+
+	return RayIntersectionResult{point, eye, normal, intersection.t, intersection.object, inside}
+}
