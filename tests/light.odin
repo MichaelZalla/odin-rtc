@@ -42,8 +42,6 @@ lighting_eye_is_45_between_light_and_surface :: proc(t: ^testing.T) {
 	material := rt.material()
 	fragment_pos := m.point(0, 0, 0)
 
-	sqrt_2_over_2 := math.sqrt(m.real(2.0)) / 2
-
 	eye := m.vector(0, sqrt_2_over_2, -sqrt_2_over_2)
 	normal := m.vector(0, 0, -1)
 	light := rt.point_light(m.point(0, 0, -10), rt.White)
@@ -60,8 +58,6 @@ lighting_light_is_45_between_eye_and_surface :: proc(t: ^testing.T) {
 	material := rt.material()
 	fragment_pos := m.point(0, 0, 0)
 
-	sqrt_2_over_2 := math.sqrt(m.real(2.0)) / 2
-
 	eye := m.vector(0, 0, -1)
 	normal := m.vector(0, 0, -1)
 	light := rt.point_light(m.point(0, 10, -10), rt.White)
@@ -77,8 +73,6 @@ lighting_eye_aligned_with_light_reflection_vector :: proc(t: ^testing.T) {
 
 	material := rt.material()
 	fragment_pos := m.point(0, 0, 0)
-
-	sqrt_2_over_2 := math.sqrt(m.real(2.0)) / 2
 
 	eye := m.vector(0, -sqrt_2_over_2, -sqrt_2_over_2)
 	normal := m.vector(0, 0, -1)
