@@ -30,7 +30,7 @@ lighting_eye_is_between_light_and_surface :: proc(t: ^testing.T) {
 	normal := m.vector(0, 0, -1)
 	light := rt.point_light(m.point(0, 0, -10), rt.White)
 
-	result := rt.lighting(&material, &light, fragment_pos, eye, normal)
+	result := rt.lighting(&material, &light, fragment_pos, eye, normal, false)
 
 	testing.expect(t, result == rt.color(1.9))
 }
@@ -46,7 +46,7 @@ lighting_eye_is_45_between_light_and_surface :: proc(t: ^testing.T) {
 	normal := m.vector(0, 0, -1)
 	light := rt.point_light(m.point(0, 0, -10), rt.White)
 
-	result := rt.lighting(&material, &light, fragment_pos, eye, normal)
+	result := rt.lighting(&material, &light, fragment_pos, eye, normal, false)
 
 	testing.expect(t, result == rt.color(1))
 }
@@ -62,7 +62,7 @@ lighting_light_is_45_between_eye_and_surface :: proc(t: ^testing.T) {
 	normal := m.vector(0, 0, -1)
 	light := rt.point_light(m.point(0, 10, -10), rt.White)
 
-	result := rt.lighting(&material, &light, fragment_pos, eye, normal)
+	result := rt.lighting(&material, &light, fragment_pos, eye, normal, false)
 
 	testing.expect(t, m.tuple_eq(result, rt.color(0.7364)))
 }
@@ -78,7 +78,7 @@ lighting_eye_aligned_with_light_reflection_vector :: proc(t: ^testing.T) {
 	normal := m.vector(0, 0, -1)
 	light := rt.point_light(m.point(0, 10, -10), rt.White)
 
-	result := rt.lighting(&material, &light, fragment_pos, eye, normal)
+	result := rt.lighting(&material, &light, fragment_pos, eye, normal, false)
 
 	testing.expect(t, m.tuple_eq(result, rt.color(1.6364)))
 }
@@ -94,7 +94,7 @@ lighting_light_behind_surface :: proc(t: ^testing.T) {
 	normal := m.vector(0, 0, -1)
 	light := rt.point_light(m.point(0, 0, 10), rt.White)
 
-	result := rt.lighting(&material, &light, fragment_pos, eye, normal)
+	result := rt.lighting(&material, &light, fragment_pos, eye, normal, false)
 
 	testing.expect(t, m.tuple_eq(result, rt.color(0.1)))
 }

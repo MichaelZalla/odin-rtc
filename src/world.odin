@@ -57,7 +57,7 @@ world_shade_hit :: proc(world: World, x: RayIntersectionResult) -> Color {
 	material := &x.object.material
 	light := world.light.?
 
-	result := lighting(material, &light, x.point, x.eye, x.normal)
+	result := lighting(material, &light, x.point, x.eye, x.normal, false)
 
 	return result
 }

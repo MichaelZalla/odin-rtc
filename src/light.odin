@@ -19,6 +19,7 @@ lighting :: proc(
 	point: m.Point,
 	eye: m.Vector,
 	normal: m.Vector,
+	in_shadow: bool,
 ) -> Color {
 	// Combines the surface color with the light's color (i.e., intensity).
 	effective_color := material.color * light.intensity
@@ -36,7 +37,7 @@ lighting :: proc(
 	diffuse: Color
 	specular: Color
 
-	if light_similarity_to_normal < 0 {
+	if in_shadow || light_similarity_to_normal < 0 {
 		diffuse, specular = Black, Black
 	} else {
 		// Computes the diffuse contribution.
