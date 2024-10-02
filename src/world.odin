@@ -53,6 +53,28 @@ world_intersect_ray :: proc(world: World, ray: Ray) -> [dynamic]Intersection {
 	return result
 }
 
+world_point_is_shadowed :: proc(world: World, point: m.Point) -> bool {
+	light := world.light.?
+
+	point_to_light := light.position - point
+
+	distance := m.mag(point_to_light)
+
+	shadow_ray := ray(point, m.norm(point_to_light))
+
+	xs := world_intersect_ray(world, shadow_ray)
+	defer delete(xs)
+
+	hit := hit(xs)
+
+	if hit == nil {
+		return false
+	} else {
+		hit := hit.?
+		return hit.t < distance
+	}
+}
+
 world_shade_hit :: proc(world: World, x: RayIntersectionResult) -> Color {
 	material := &x.object.material
 	light := world.light.?
