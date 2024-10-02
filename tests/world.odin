@@ -109,6 +109,34 @@ world_shade_hit_inside :: proc(t: ^testing.T) {
 }
 
 @(test)
+world_shade_hit_shadow :: proc(t: ^testing.T) {
+	// Scenario: `world_shadow_hit()` is passed a hit that is in shadow.
+
+	world := rt.world()
+	defer rt.world_free(world)
+
+	world.light = rt.point_light(m.point(0, 0, -10), rt.White)
+
+	s1 := rt.sphere()
+
+	s2 := rt.sphere()
+	s2.transform = m.mat4_translate(m.vector(0, 0, 10))
+
+	append(&world.objects, s1)
+	append(&world.objects, s2)
+
+	ray := rt.ray(m.point(0, 0, 5), m.vector(0, 0, 1))
+
+	intersection := rt.intersection(4, &s2)
+
+	comps := rt.ray_prepare_computations(ray, intersection)
+
+	sample := rt.world_shade_hit(world, comps)
+
+	testing.expect(t, m.tuple_eq(sample, rt.color(0.1, 0.1, 0.1)))
+}
+
+@(test)
 world_color_at_miss :: proc(t: ^testing.T) {
 	// Scenario: The color when a ray misses.
 

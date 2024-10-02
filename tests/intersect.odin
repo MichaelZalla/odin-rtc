@@ -134,3 +134,21 @@ ray_sphere_intersect_behind :: proc(t: ^testing.T) {
 	testing.expect(t, xs[0].t == -6.0)
 	testing.expect(t, xs[1].t == -4.0)
 }
+
+@(test)
+ray_sphere_offset :: proc(t: ^testing.T) {
+	// Scenario: The hit should offset the point.
+
+	ray := rt.ray(m.point(0, 0, -5), m.vector(0, 0, 1))
+
+	sphere := rt.sphere()
+	sphere.transform = m.mat4_translate(m.vector(0, 0, 1))
+
+	intersection := rt.intersection(5, &sphere)
+
+	comps := rt.ray_prepare_computations(ray, intersection)
+
+	testing.expect(t, comps.point.z > comps.over_point.z)
+
+	testing.expect(t, comps.over_point.z < -m.EPSILON / 2)
+}

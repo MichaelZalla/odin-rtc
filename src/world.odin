@@ -79,7 +79,9 @@ world_shade_hit :: proc(world: World, x: RayIntersectionResult) -> Color {
 	material := &x.object.material
 	light := world.light.?
 
-	result := lighting(material, &light, x.point, x.eye, x.normal, false)
+	in_shadow := world_point_is_shadowed(world, x.over_point)
+
+	result := lighting(material, &light, x.over_point, x.eye, x.normal, in_shadow)
 
 	return result
 }
