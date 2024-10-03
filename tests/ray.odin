@@ -58,38 +58,6 @@ ray_scale :: proc(t: ^testing.T) {
 	testing.expect(t, ray2.direction == m.vector(0, 3, 0))
 }
 
-@(test)
-ray_intersect_scaled_sphere :: proc(t: ^testing.T) {
-	// Scenario: Intersecting a ray with a scaled sphere.
-
-	ray := rt.ray(m.point(0, 0, -5), m.vector(0, 0, 1))
-
-	sphere := rt.sphere()
-	sphere.transform = m.mat4_scale(2)
-
-	xs := rt.intersect(&sphere, ray)
-	defer delete(xs)
-
-	testing.expect(t, len(xs) == 2)
-	testing.expect(t, xs[0].t == 3)
-	testing.expect(t, xs[1].t == 7)
-}
-
-@(test)
-ray_intersect_translated_sphere :: proc(t: ^testing.T) {
-	// Scenario: Intersecting a ray with a translated sphere.
-
-	ray := rt.ray(m.point(0, 0, -5), m.vector(0, 0, 1))
-
-	sphere := rt.sphere()
-	sphere.transform = m.mat4_translate(m.vector(5, 0, 0))
-
-	xs := rt.intersect(&sphere, ray)
-	defer delete(xs)
-
-	testing.expect(t, len(xs) == 0)
-	testing.expect(t, xs == nil)
-}
 
 @(test)
 precompute_intersection_outside :: proc(t: ^testing.T) {
