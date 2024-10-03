@@ -96,13 +96,7 @@ sphere_normal_translated :: proc(t: ^testing.T) {
 
 	normal := rt.sphere_normal_at(&sphere, m.point(0, 1.70711, -0.70711))
 
-	testing.expectf(
-		t,
-		m.tuple_eq(normal, m.vector(0, 0.70711, -0.70711)),
-		"%v != %v",
-		normal,
-		m.vector(0, 0.70711, -0.70711),
-	)
+	testing.expect(t, m.tuple_eq(normal, m.vector(0, 0.70711, -0.70711)))
 }
 
 @(test)
@@ -119,11 +113,5 @@ sphere_normal_rotated_and_scaled :: proc(t: ^testing.T) {
 
 	normal := rt.sphere_normal_at(&sphere, m.point(0, sqrt_2_over_2, -sqrt_2_over_2))
 
-	testing.expectf(
-		t,
-		m.tuple_eq(normal, m.vector(0, 0.97014, -0.24254)),
-		"%v != %v",
-		normal,
-		m.vector(0, 0.97014, -0.24254),
-	)
+	testing.expect(t, m.tuple_eq(normal, m.vector(0, 0.97014, -0.24254)))
 }

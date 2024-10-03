@@ -300,5 +300,5 @@ vector_reflect_slanted :: proc(t: ^testing.T) {
 	n := m.vector(sqrt_2_over_2, sqrt_2_over_2, 0)
 	r := m.reflect(v, n)
 
-	testing.expectf(t, m.tuple_eq(r, m.vector(1, 0, 0)), "%v != %v", r, m.vector(1, 0, 0))
+	testing.expect(t, m.tuple_eq(r, m.vector(1, 0, 0)))
 }

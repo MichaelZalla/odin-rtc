@@ -79,7 +79,7 @@ mat4_multiply_mat4 :: proc(t: ^testing.T) {
 	product := a * b
 	expected_product := m.Mat4{20, 22, 50, 48, 44, 54, 114, 108, 40, 58, 110, 102, 16, 26, 46, 42}
 
-	testing.expectf(t, product == expected_product, "%v != %v", product, expected_product)
+	testing.expect(t, product == expected_product)
 }
 
 @(test)
@@ -92,7 +92,7 @@ mat4_multiply_tuple :: proc(t: ^testing.T) {
 	product := a * b
 	expected_product := m.tuple(18, 24, 33, 1)
 
-	testing.expectf(t, product == expected_product, "%v != %v", product, expected_product)
+	testing.expect(t, product == expected_product)
 }
 
 @(test)
@@ -106,7 +106,7 @@ mat4_multiply_identity :: proc(t: ^testing.T) {
 	product := a * identity
 	expected_product := m.Mat4{0, 1, 2, 4, 1, 2, 4, 8, 2, 4, 8, 16, 4, 8, 16, 32}
 
-	testing.expectf(t, product == expected_product, "%v != %v", product, expected_product)
+	testing.expect(t, product == expected_product)
 }
 
 
@@ -119,7 +119,7 @@ mat4_transpose :: proc(t: ^testing.T) {
 	transpose := intrinsics.transpose(a)
 	expected_transpose := m.Mat4{0, 9, 1, 0, 9, 8, 8, 0, 3, 0, 5, 5, 0, 8, 3, 8}
 
-	testing.expectf(t, transpose == expected_transpose, "%v != %v", transpose, expected_transpose)
+	testing.expect(t, transpose == expected_transpose)
 }
 
 @(test)
@@ -131,7 +131,7 @@ mat4_transpose_of_identity :: proc(t: ^testing.T) {
 	transpose := intrinsics.transpose(identity)
 	expected_transpose: m.Mat4 = 1
 
-	testing.expectf(t, transpose == expected_transpose, "%v != %v", transpose, expected_transpose)
+	testing.expect(t, transpose == expected_transpose)
 }
 
 @(test)
@@ -152,7 +152,7 @@ mat3_submatrix :: proc(t: ^testing.T) {
 	submatrix := m.mat3_submatrix(&a, 0, 2)
 	expected_submatrix := m.Mat2{-3, 2, 0, 6}
 
-	testing.expectf(t, submatrix == expected_submatrix, "%v != %v", submatrix, expected_submatrix)
+	testing.expect(t, submatrix == expected_submatrix)
 }
 
 @(test)
@@ -164,7 +164,7 @@ mat4_submatrix :: proc(t: ^testing.T) {
 	submatrix := m.mat4_submatrix(&a, 2, 1)
 	expected_submatrix := m.Mat3{-6, 1, 6, -8, 8, 6, -7, -1, 1}
 
-	testing.expectf(t, submatrix == expected_submatrix, "%v != %v", submatrix, expected_submatrix)
+	testing.expect(t, submatrix == expected_submatrix)
 }
 
 @(test)
@@ -257,32 +257,12 @@ mat4_inverse_1 :: proc(t: ^testing.T) {
 	testing.expect(t, linalg.determinant(a) == 532)
 
 	testing.expect(t, linalg.matrix4_cofactor(a, 3, 2) == -160)
-
-	testing.expectf(
-		t,
-		m.float_eq(inverse[3, 2], real(-160) / 532),
-		"%v != %v",
-		inverse[3, 2],
-		real(-160) / 532,
-	)
+	testing.expect(t, m.float_eq(inverse[3, 2], real(-160) / 532))
 
 	testing.expect(t, linalg.matrix4_cofactor(a, 2, 3) == 105)
+	testing.expect(t, m.float_eq(inverse[2, 3], real(105) / 532))
 
-	testing.expectf(
-		t,
-		m.float_eq(inverse[2, 3], real(105) / 532),
-		"%v != %v",
-		inverse[2, 3],
-		real(105) / 532,
-	)
-
-	testing.expectf(
-		t,
-		m.mat4_eq(&inverse, &expected_inverse),
-		"%v != %v",
-		inverse,
-		expected_inverse,
-	)
+	testing.expect(t, m.mat4_eq(&inverse, &expected_inverse))
 }
 
 @(test)
@@ -312,13 +292,7 @@ mat4_inverse_2 :: proc(t: ^testing.T) {
 		-1.92308,
 	}
 
-	testing.expectf(
-		t,
-		m.mat4_eq(&inverse, &expected_inverse),
-		"%v != %v",
-		inverse,
-		expected_inverse,
-	)
+	testing.expect(t, m.mat4_eq(&inverse, &expected_inverse))
 }
 
 @(test)
@@ -335,13 +309,7 @@ mat4_inverse_3 :: proc(t: ^testing.T) {
 
 	expected_original := a
 
-	testing.expectf(
-		t,
-		m.mat4_eq(&original, &expected_original),
-		"%v != %v",
-		original,
-		expected_original,
-	)
+	testing.expect(t, m.mat4_eq(&original, &expected_original))
 }
 
 @(test)

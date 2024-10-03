@@ -47,9 +47,9 @@ canvas_ppm_header :: proc(t: ^testing.T) {
 	lines := strings.split_lines_n(ppm, 4)
 	defer delete(lines)
 
-	testing.expectf(t, strings.compare(lines[0], "P3") == 0, "%v != %v", lines[0], "P3")
-	testing.expectf(t, strings.compare(lines[1], "5 3") == 0, "%v != %v", lines[1], "5 3")
-	testing.expectf(t, strings.compare(lines[2], "255") == 0, "%v != %v", lines[2], "255")
+	testing.expect(t, strings.compare(lines[0], "P3") == 0)
+	testing.expect(t, strings.compare(lines[1], "5 3") == 0)
+	testing.expect(t, strings.compare(lines[2], "255") == 0)
 }
 
 @(test)
@@ -73,27 +73,9 @@ canvas_ppm_pixel_data :: proc(t: ^testing.T) {
 	lines := strings.split_lines(ppm)
 	defer delete(lines)
 
-	testing.expectf(
-		t,
-		strings.compare(lines[3], "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0") == 0,
-		"%v != %v",
-		lines[3],
-		"255 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
-	)
-	testing.expectf(
-		t,
-		strings.compare(lines[4], "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0") == 0,
-		"%v != %v",
-		lines[4],
-		"0 0 0 0 0 0 0 128 0 0 0 0 0 0 0",
-	)
-	testing.expectf(
-		t,
-		strings.compare(lines[5], "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255") == 0,
-		"%v != %v",
-		lines[5],
-		"0 0 0 0 0 0 0 0 0 0 0 0 0 0 255",
-	)
+	testing.expect(t, strings.compare(lines[3], "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0") == 0)
+	testing.expect(t, strings.compare(lines[4], "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0") == 0)
+	testing.expect(t, strings.compare(lines[5], "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255") == 0)
 }
 
 @(test)
@@ -111,44 +93,32 @@ canvas_ppm_max_line_length :: proc(t: ^testing.T) {
 	lines := strings.split_lines(ppm)
 	defer delete(lines)
 
-	testing.expectf(
+	testing.expect(
 		t,
 		strings.compare(
 			lines[3],
 			"255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204",
 		) ==
 		0,
-		"%v != %v",
-		lines[3],
-		"255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204",
 	)
 
-	testing.expectf(
+	testing.expect(
 		t,
 		strings.compare(lines[4], "153 255 204 153 255 204 153 255 204 153 255 204 153") == 0,
-		"%v != %v",
-		lines[4],
-		"153 255 204 153 255 204 153 255 204 153 255 204 153",
 	)
 
-	testing.expectf(
+	testing.expect(
 		t,
 		strings.compare(
 			lines[5],
 			"255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204",
 		) ==
 		0,
-		"%v != %v",
-		lines[5],
-		"255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204",
 	)
 
-	testing.expectf(
+	testing.expect(
 		t,
 		strings.compare(lines[6], "153 255 204 153 255 204 153 255 204 153 255 204 153") == 0,
-		"%v != %v",
-		lines[6],
-		"153 255 204 153 255 204 153 255 204 153 255 204 153",
 	)
 }
 
