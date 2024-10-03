@@ -7,24 +7,24 @@ import m "../src/math"
 
 @(test)
 intersection_create :: proc(t: ^testing.T) {
-	// Scenario: An intersection encapsulate a t-value and an object.
+	// Scenario: An intersection encapsulate a t-value and a shape.
 
-	s := rt.sphere()
-	i := rt.intersection(3.5, &s)
+	sphere := rt.sphere()
+	intersection := rt.intersection(3.5, &sphere)
 
-	testing.expect(t, i.t == 3.5)
-	testing.expect(t, i.object == &s)
+	testing.expect(t, intersection.t == 3.5)
+	testing.expect(t, intersection.shape == &sphere)
 }
 
 @(test)
 intersection_aggregate :: proc(t: ^testing.T) {
 	// Scenario: Aggregating multiple intersections.
 
-	s := rt.sphere()
+	sphere := rt.sphere()
 
-	i1 := rt.intersection(1, &s)
-	i2 := rt.intersection(2, &s)
-	i3 := rt.intersection(3, &s)
+	i1 := rt.intersection(1, &sphere)
+	i2 := rt.intersection(2, &sphere)
+	i3 := rt.intersection(3, &sphere)
 
 	xs := rt.intersections(i1, i2, i3)
 	defer delete(xs)
@@ -40,8 +40,8 @@ intersection_aggregate :: proc(t: ^testing.T) {
 ray_sphere_intersect :: proc(t: ^testing.T) {
 	// Scenario: A ray intersects a sphere at two points.
 
-	r := rt.ray(m.point(0, 0, -5), m.vector(0, 0, 1))
-	s := rt.sphere()
+	ray := rt.ray(m.point(0, 0, -5), m.vector(0, 0, 1))
+	sphere := rt.sphere()
 
 	// sphere_to_ray = Vector{0,0,-5} - Vector{0,0,0}
 	//  						 = Vector{0,0,-5}
@@ -68,7 +68,7 @@ ray_sphere_intersect :: proc(t: ^testing.T) {
 	//  						= 100 - 96
 	//  						= 4
 
-	xs := rt.intersect(&s, r)
+	xs := rt.intersect(&sphere, ray)
 	defer delete(xs)
 
 	testing.expect(t, len(xs) == 2)
@@ -80,10 +80,10 @@ ray_sphere_intersect :: proc(t: ^testing.T) {
 ray_sphere_intersect_tangent :: proc(t: ^testing.T) {
 	// Scenario: A ray intersects a sphere at a tangent.
 
-	r := rt.ray(m.point(0, 1, -5), m.vector(0, 0, 1))
-	s := rt.sphere()
+	ray := rt.ray(m.point(0, 1, -5), m.vector(0, 0, 1))
+	sphere := rt.sphere()
 
-	xs := rt.intersect(&s, r)
+	xs := rt.intersect(&sphere, ray)
 	defer delete(xs)
 
 	testing.expect(t, len(xs) == 2)
@@ -95,10 +95,10 @@ ray_sphere_intersect_tangent :: proc(t: ^testing.T) {
 ray_sphere_intersect_miss :: proc(t: ^testing.T) {
 	// Scenario: A ray misses a sphere.
 
-	r := rt.ray(m.point(0, 2, -5), m.vector(0, 0, 1))
-	s := rt.sphere()
+	ray := rt.ray(m.point(0, 2, -5), m.vector(0, 0, 1))
+	sphere := rt.sphere()
 
-	xs := rt.intersect(&s, r)
+	xs := rt.intersect(&sphere, ray)
 	defer delete(xs)
 
 	testing.expect(t, xs == nil)
@@ -109,10 +109,10 @@ ray_sphere_intersect_miss :: proc(t: ^testing.T) {
 ray_sphere_intersect_inside :: proc(t: ^testing.T) {
 	// Scenario: A ray originates inside a sphere.
 
-	r := rt.ray(m.point(0, 0, 0), m.vector(0, 0, 1))
-	s := rt.sphere()
+	ray := rt.ray(m.point(0, 0, 0), m.vector(0, 0, 1))
+	sphere := rt.sphere()
 
-	xs := rt.intersect(&s, r)
+	xs := rt.intersect(&sphere, ray)
 	defer delete(xs)
 
 	testing.expect(t, len(xs) == 2)
@@ -124,10 +124,10 @@ ray_sphere_intersect_inside :: proc(t: ^testing.T) {
 ray_sphere_intersect_behind :: proc(t: ^testing.T) {
 	// Scenario: A sphere is behind a ray.
 
-	r := rt.ray(m.point(0, 0, 5), m.vector(0, 0, 1))
-	s := rt.sphere()
+	ray := rt.ray(m.point(0, 0, 5), m.vector(0, 0, 1))
+	sphere := rt.sphere()
 
-	xs := rt.intersect(&s, r)
+	xs := rt.intersect(&sphere, ray)
 	defer delete(xs)
 
 	testing.expect(t, len(xs) == 2)
