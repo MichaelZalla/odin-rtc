@@ -72,8 +72,9 @@ ray_sphere_intersect :: proc(t: ^testing.T) {
 	defer delete(xs)
 
 	testing.expect(t, len(xs) == 2)
-	testing.expectf(t, xs[0].t == 4.0, "%v != %v", xs[0].t, 4.0)
-	testing.expectf(t, xs[1].t == 6.0, "%v != %v", xs[1].t, 6.0)
+
+	testing.expect(t, xs[0].t == 4.0)
+	testing.expect(t, xs[1].t == 6.0)
 }
 
 @(test)
