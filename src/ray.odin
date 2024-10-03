@@ -25,14 +25,17 @@ RayIntersectionResult :: struct {
 	eye:        m.Vector,
 	normal:     m.Vector,
 	t:          m.real,
-	object:     ^Sphere,
+	shape:      ^Sphere,
 	inside:     bool,
 }
 
 ray_prepare_computations :: proc(ray: Ray, intersection: Intersection) -> RayIntersectionResult {
 	point := position(ray, intersection.t)
+
 	eye := -ray.direction
-	normal := sphere_normal_at(intersection.object, point)
+
+	normal := sphere_normal_at(intersection.shape, point)
+
 	inside := m.dot(eye, normal) < 0
 
 	if inside {
@@ -47,7 +50,7 @@ ray_prepare_computations :: proc(ray: Ray, intersection: Intersection) -> RayInt
 		eye,
 		normal,
 		intersection.t,
-		intersection.object,
+		intersection.shape,
 		inside,
 	}
 }

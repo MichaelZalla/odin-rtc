@@ -6,12 +6,12 @@ import linalg "core:math/linalg"
 import m "math"
 
 Intersection :: struct {
-	t:      m.real,
-	object: ^Sphere,
+	t:     m.real,
+	shape: ^Sphere,
 }
 
-intersection :: proc(t: m.real, object: ^Sphere) -> Intersection {
-	return Intersection{t, object}
+intersection :: proc(t: m.real, shape: ^Sphere) -> Intersection {
+	return Intersection{t, shape}
 }
 
 intersections :: proc(intersections: ..Intersection) -> (result: [dynamic]Intersection) {
