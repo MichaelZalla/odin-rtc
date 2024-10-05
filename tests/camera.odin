@@ -82,7 +82,10 @@ camera_cast_ray_transformed :: proc(t: ^testing.T) {
 camera_render_world :: proc(t: ^testing.T) {
 	// Scenario: Rendering a world through a given camera.
 
-	world := rt.world_default()
+	sphere1 := rt.sphere()
+	sphere2 := rt.sphere()
+
+	world := make_sphere_world(&sphere1, &sphere2)
 	defer rt.world_free(world)
 
 	camera := rt.camera(11, 11, PI_OVER_2)
