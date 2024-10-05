@@ -5,15 +5,15 @@ import "core:slice"
 import m "math"
 
 World :: struct {
-	objects: [dynamic]Sphere,
-	light:   Maybe(PointLight),
+	shapes: [dynamic]Sphere,
+	light:  Maybe(PointLight),
 }
 
 world :: proc() -> World {
-	objects := [dynamic]Sphere{}
+	shapes := [dynamic]Sphere{}
 	light: Maybe(PointLight) = nil
 
-	return World{objects, light}
+	return World{shapes, light}
 }
 
 world_default :: proc() -> World {
@@ -27,19 +27,19 @@ world_default :: proc() -> World {
 	sphere2 := sphere()
 	sphere2.transform = m.mat4_scale(0.5)
 
-	objects := [dynamic]Sphere{sphere1, sphere2}
+	shapes := [dynamic]Sphere{sphere1, sphere2}
 
-	return World{objects, light}
+	return World{shapes, light}
 }
 
 world_free :: proc(world: World) {
-	delete(world.objects)
+	delete(world.shapes)
 }
 
 world_intersect_ray :: proc(world: World, ray: Ray) -> [dynamic]Intersection {
 	result := [dynamic]Intersection{}
 
-	for &shape in world.objects {
+	for &shape in world.shapes {
 		xs := intersect(&shape, ray)
 		defer delete(xs)
 
