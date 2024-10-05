@@ -77,7 +77,7 @@ make_scene_world :: proc() -> rt.World {
 
 	world.light = rt.point_light(m.point(-10, 10, -10), rt.White)
 
-	world.objects = [dynamic]rt.Sphere {
+	world.shapes = [dynamic]rt.Sphere {
 		ground,
 		left_wall,
 		right_wall,

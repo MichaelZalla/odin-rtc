@@ -12,7 +12,7 @@ world_create :: proc(t: ^testing.T) {
 	w := rt.world()
 	defer rt.world_free(w)
 
-	testing.expect(t, len(w.objects) == 0)
+	testing.expect(t, len(w.shapes) == 0)
 	testing.expect(t, w.light == nil)
 }
 
@@ -33,10 +33,10 @@ world_default :: proc(t: ^testing.T) {
 	default_world := rt.world_default()
 	defer rt.world_free(default_world)
 
-	testing.expect(t, len(default_world.objects) == 2)
+	testing.expect(t, len(default_world.shapes) == 2)
 
-	testing.expect(t, default_world.objects[0] == sphere1)
-	testing.expect(t, default_world.objects[1] == sphere2)
+	testing.expect(t, default_world.shapes[0] == sphere1)
+	testing.expect(t, default_world.shapes[1] == sphere2)
 
 	testing.expect(t, default_world.light != nil)
 
@@ -72,7 +72,7 @@ world_shade_hit_outside :: proc(t: ^testing.T) {
 	defer rt.world_free(world)
 
 	ray := rt.ray(m.point(0, 0, -5), m.vector(0, 0, 1))
-	object := world.objects[0]
+	object := world.shapes[0]
 
 	intersection := rt.intersection(4, &object)
 
@@ -96,7 +96,7 @@ world_shade_hit_inside :: proc(t: ^testing.T) {
 	world.light = rt.point_light(m.point(0, 0.25, 0), rt.White)
 
 	ray := rt.ray(m.point(0, 0, 0), m.vector(0, 0, 1))
-	object := world.objects[1]
+	object := world.shapes[1]
 
 	intersection := rt.intersection(0.5, &object)
 
@@ -122,8 +122,8 @@ world_shade_hit_shadow :: proc(t: ^testing.T) {
 	s2 := rt.sphere()
 	s2.transform = m.mat4_translate(m.vector(0, 0, 10))
 
-	append(&world.objects, s1)
-	append(&world.objects, s2)
+	append(&world.shapes, s1)
+	append(&world.shapes, s2)
 
 	ray := rt.ray(m.point(0, 0, 5), m.vector(0, 0, 1))
 
@@ -172,10 +172,10 @@ world_color_at_hit_between_objects :: proc(t: ^testing.T) {
 	world := rt.world_default()
 	defer rt.world_free(world)
 
-	outer := &world.objects[0]
+	outer := &world.shapes[0]
 	outer.material.ambient = 1
 
-	inner := &world.objects[1]
+	inner := &world.shapes[1]
 	inner.material.ambient = 1
 
 	ray := rt.ray(m.point(0, 0, 0.75), m.vector(0, 0, -1))
