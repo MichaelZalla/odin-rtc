@@ -9,6 +9,30 @@ import m "../../../src/math"
 PI :: linalg.PI
 
 make_scene_world :: proc() -> rt.World {
+	// World and lighting
+	world := rt.world()
+
+	world.light = rt.point_light(m.point(-10, 10, -10), rt.White)
+
+	return world
+}
+
+make_camera :: proc() -> rt.Camera {
+	camera := rt.camera(1080, 720, PI / 2)
+
+	view_position := m.point(0, 1.5, -5)
+	target := m.point(0, 1, 0)
+	up := m.vector(0, 1, 0)
+
+	camera.transform = rt.look_at(view_position, target, up)
+
+	return camera
+}
+
+main :: proc() {
+	world := make_scene_world()
+	defer rt.world_free(world)
+
 	// Ground plane
 
 	ground := rt.sphere()
@@ -71,39 +95,14 @@ make_scene_world :: proc() -> rt.World {
 	small_sphere.material.diffuse = 0.7
 	small_sphere.material.specular = 0.3
 
-	// World and lighting
-
-	world := rt.world()
-
-	world.light = rt.point_light(m.point(-10, 10, -10), rt.White)
-
-	world.shapes = [dynamic]rt.Sphere {
-		ground,
-		left_wall,
-		right_wall,
-		big_sphere,
-		middle_sphere,
-		small_sphere,
+	world.shapes = [dynamic]^rt.Shape {
+		&ground,
+		&left_wall,
+		&right_wall,
+		&big_sphere,
+		&middle_sphere,
+		&small_sphere,
 	}
-
-	return world
-}
-
-make_camera :: proc() -> rt.Camera {
-	camera := rt.camera(1080, 720, PI / 2)
-
-	view_position := m.point(0, 1.5, -5)
-	target := m.point(0, 1, 0)
-	up := m.vector(0, 1, 0)
-
-	camera.transform = rt.look_at(view_position, target, up)
-
-	return camera
-}
-
-main :: proc() {
-	world := make_scene_world()
-	defer rt.world_free(world)
 
 	camera := make_camera()
 

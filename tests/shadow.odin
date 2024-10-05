@@ -27,7 +27,10 @@ lighting_shadow_basic :: proc(t: ^testing.T) {
 point_shadow_shape_not_in_shadow_path_1 :: proc(t: ^testing.T) {
 	// Scenario: A sphere sits outside of the point's shadow path.
 
-	world := rt.world_default()
+	sphere1 := rt.sphere()
+	sphere2 := rt.sphere()
+
+	world := make_sphere_world(&sphere1, &sphere2)
 	defer rt.world_free(world)
 
 	p := m.point(0, 10, 0)
@@ -39,7 +42,10 @@ point_shadow_shape_not_in_shadow_path_1 :: proc(t: ^testing.T) {
 point_shadow_shape_not_in_shadow_path_2 :: proc(t: ^testing.T) {
 	// Scenario: The light sits between the point and a sphere.
 
-	world := rt.world_default()
+	sphere1 := rt.sphere()
+	sphere2 := rt.sphere()
+
+	world := make_sphere_world(&sphere1, &sphere2)
 	defer rt.world_free(world)
 
 	p := m.point(-20, 20, -20)
@@ -51,7 +57,10 @@ point_shadow_shape_not_in_shadow_path_2 :: proc(t: ^testing.T) {
 point_shadow_shape_not_in_shadow_path_3 :: proc(t: ^testing.T) {
 	// Scenario: A point sits between the light and a sphere.
 
-	world := rt.world_default()
+	sphere1 := rt.sphere()
+	sphere2 := rt.sphere()
+
+	world := make_sphere_world(&sphere1, &sphere2)
 	defer rt.world_free(world)
 
 	p := m.point(-2, 2, -2)
@@ -63,7 +72,10 @@ point_shadow_shape_not_in_shadow_path_3 :: proc(t: ^testing.T) {
 point_shadow_shape_in_shadow_path :: proc(t: ^testing.T) {
 	// Scenario: A sphere sits between the point and the light.
 
-	world := rt.world_default()
+	sphere1 := rt.sphere()
+	sphere2 := rt.sphere()
+
+	world := make_sphere_world(&sphere1, &sphere2)
 	defer rt.world_free(world)
 
 	p := m.point(10, -10, 10)

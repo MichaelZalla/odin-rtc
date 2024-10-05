@@ -5,12 +5,12 @@ import "core:slice"
 import m "math"
 
 World :: struct {
-	shapes: [dynamic]Sphere,
+	shapes: [dynamic]^Shape,
 	light:  Maybe(PointLight),
 }
 
 world :: proc() -> World {
-	shapes := [dynamic]Sphere{}
+	shapes := [dynamic]^Shape{}
 	light: Maybe(PointLight) = nil
 
 	return World{shapes, light}
@@ -19,15 +19,7 @@ world :: proc() -> World {
 world_default :: proc() -> World {
 	light := point_light(m.point(-10, 10, -10), White)
 
-	sphere1 := sphere()
-	sphere1.material.color = color(0.8, 1, 0.6)
-	sphere1.material.diffuse = 0.7
-	sphere1.material.specular = 0.2
-
-	sphere2 := sphere()
-	sphere2.transform = m.mat4_scale(0.5)
-
-	shapes := [dynamic]Sphere{sphere1, sphere2}
+	shapes := [dynamic]^Shape{}
 
 	return World{shapes, light}
 }
@@ -39,8 +31,8 @@ world_free :: proc(world: World) {
 world_intersect_ray :: proc(world: World, ray: Ray) -> [dynamic]Intersection {
 	result := [dynamic]Intersection{}
 
-	for &shape in world.shapes {
-		xs := intersect(&shape, ray)
+	for shape in world.shapes {
+		xs := intersect(shape, ray)
 		defer delete(xs)
 
 		for x in xs {
