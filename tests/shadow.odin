@@ -25,7 +25,9 @@ lighting_shadow_basic :: proc(t: ^testing.T) {
 
 @(test)
 point_shadow_shape_not_in_shadow_path_1 :: proc(t: ^testing.T) {
-	// Scenario: A sphere sits outside of the point's shadow path.
+	// Scenario: There is no shadow when nothing is collinear w/ point and light.
+
+	// A sphere sits outside of the point's shadow path.
 
 	sphere1 := rt.sphere()
 	sphere2 := rt.sphere()
@@ -40,7 +42,9 @@ point_shadow_shape_not_in_shadow_path_1 :: proc(t: ^testing.T) {
 
 @(test)
 point_shadow_shape_not_in_shadow_path_2 :: proc(t: ^testing.T) {
-	// Scenario: The light sits between the point and a sphere.
+	// Scenario: There is no shadow when an object is behind the light.
+
+	// The light sits between the point and a sphere.
 
 	sphere1 := rt.sphere()
 	sphere2 := rt.sphere()
@@ -55,7 +59,9 @@ point_shadow_shape_not_in_shadow_path_2 :: proc(t: ^testing.T) {
 
 @(test)
 point_shadow_shape_not_in_shadow_path_3 :: proc(t: ^testing.T) {
-	// Scenario: A point sits between the light and a sphere.
+	// Scenario: There is no shadow when an object is behind the point.
+
+	// A point sits between the light and a sphere.
 
 	sphere1 := rt.sphere()
 	sphere2 := rt.sphere()
@@ -70,7 +76,9 @@ point_shadow_shape_not_in_shadow_path_3 :: proc(t: ^testing.T) {
 
 @(test)
 point_shadow_shape_in_shadow_path :: proc(t: ^testing.T) {
-	// Scenario: A sphere sits between the point and the light.
+	// Scenario: The shadow when an object is between the point and the light.
+
+	// A sphere sits between the point and the light.
 
 	sphere1 := rt.sphere()
 	sphere2 := rt.sphere()
