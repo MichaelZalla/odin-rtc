@@ -52,7 +52,7 @@ world_point_is_shadowed :: proc(world: World, point: m.Point) -> bool {
 
 	point_to_light := light.position - point
 
-	distance := m.mag(point_to_light)
+	distance_to_light := m.mag(point_to_light)
 
 	// Creates a shadow ray from the point toward the light source.
 
@@ -71,7 +71,7 @@ world_point_is_shadowed :: proc(world: World, point: m.Point) -> bool {
 		return false
 	} else {
 		hit := hit.?
-		return hit.t < distance
+		return hit.t < distance_to_light
 	}
 }
 
