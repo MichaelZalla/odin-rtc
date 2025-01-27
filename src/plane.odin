@@ -19,10 +19,13 @@ plane :: proc() -> Plane {
 plane_intersect_local :: proc(shape: ^Shape, local_ray: Ray) -> [dynamic]Intersection {
 	plane := transmute(^Plane)shape
 
+	// The plane exists in X-Z-space, meaning it has no slope in Y; therefore, if
+	// the given ray has no slope in Y, then it must be parallel to the plane.
 	if math.abs(local_ray.direction.y) < m.EPSILON {
 		return nil
 	}
 
+	// t = -origin_y / direction_y;
 	t := -local_ray.origin.y / local_ray.direction.y
 
 	intersection := Intersection{t, plane}

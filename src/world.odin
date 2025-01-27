@@ -48,14 +48,22 @@ world_intersect_ray :: proc(world: World, ray: Ray) -> [dynamic]Intersection {
 world_point_is_shadowed :: proc(world: World, point: m.Point) -> bool {
 	light := world.light.?
 
+	// Measures the distance from the point to the light source.
+
 	point_to_light := light.position - point
 
 	distance := m.mag(point_to_light)
 
+	// Creates a shadow ray from the point toward the light source.
+
 	shadow_ray := ray(point, m.norm(point_to_light))
+
+	// Intersects the shadow ray with the world.
 
 	xs := world_intersect_ray(world, shadow_ray)
 	defer delete(xs)
+
+	// Checks if the shadow ray hit something before reaching the light.
 
 	hit := hit(xs)
 

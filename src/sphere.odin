@@ -51,6 +51,7 @@ sphere_normal_local :: proc(shape: ^Shape, local_point: m.Point) -> m.Vector {
 
 	// Note: Assumes that `point` does in fact sit on the sphere's surface.
 	// Note: Assumes that `sphere` is centered at the origin in its local space.
+	// Note: Subtracting the origin point yields a vector.
 
 	return m.norm(local_point - m.point(0, 0, 0))
 }
