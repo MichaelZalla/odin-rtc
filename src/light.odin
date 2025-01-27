@@ -15,6 +15,7 @@ point_light :: proc(position: m.Point, intensity: Color) -> PointLight {
 
 lighting :: proc(
 	material: ^Material,
+	object: ^Shape,
 	light: ^PointLight,
 	point: m.Point,
 	eye: m.Vector,
@@ -28,7 +29,7 @@ lighting :: proc(
 	color: Color
 
 	if ok {
-		color = stripe_color_at(&material.pattern.?, point)
+		color = stripe_color_at_object(&material.pattern.?, object, point)
 	} else {
 		color = material.color
 	}

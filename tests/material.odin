@@ -47,6 +47,7 @@ sphere_material_stripe_pattern :: proc(t: ^testing.T) {
 	// Scenario: Lighting with a pattern applied to a material.
 
 	mat := rt.material()
+	object := rt.sphere()
 
 	// Give the material a stripe pattern.
 	mat.pattern = rt.stripe_pattern()
@@ -61,8 +62,25 @@ sphere_material_stripe_pattern :: proc(t: ^testing.T) {
 	normal_vector := m.vector(0, 0, -1)
 	point_light := rt.point_light(m.point(0, 0, -10), rt.White)
 
-	c1 := rt.lighting(&mat, &point_light, m.point(0.9, 0, 0), eye_vector, normal_vector, false)
-	c2 := rt.lighting(&mat, &point_light, m.point(1.1, 0, 0), eye_vector, normal_vector, false)
+	c1 := rt.lighting(
+		&mat,
+		&object,
+		&point_light,
+		m.point(0.9, 0, 0),
+		eye_vector,
+		normal_vector,
+		false,
+	)
+
+	c2 := rt.lighting(
+		&mat,
+		&object,
+		&point_light,
+		m.point(1.1, 0, 0),
+		eye_vector,
+		normal_vector,
+		false,
+	)
 
 	testing.expect(t, m.tuple_eq(c1, rt.White))
 	testing.expect(t, m.tuple_eq(c2, rt.Black))
