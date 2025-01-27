@@ -56,7 +56,7 @@ camera_cast_ray_center :: proc(t: ^testing.T) {
 
 @(test)
 camera_cast_ray_corner :: proc(t: ^testing.T) {
-	// Scenario: Constructing a ray through the center of the canvas.
+	// Scenario: Constructing a ray through a corner of the canvas.
 
 	camera := rt.camera(201, 101, PI_OVER_2)
 	ray := rt.camera_ray_for_pixel(camera, 0, 0)

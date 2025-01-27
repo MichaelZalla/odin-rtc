@@ -31,7 +31,7 @@ shape_default_transform_edit :: proc(t: ^testing.T) {
 
 @(test)
 shape_default_material :: proc(t: ^testing.T) {
-	// Scenario: The default materialation for a shape.
+	// Scenario: The default material for a shape.
 
 	shape := rt.sphere()
 

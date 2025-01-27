@@ -40,7 +40,7 @@ make_mat2 :: proc(t: ^testing.T) {
 
 @(test)
 make_mat3 :: proc(t: ^testing.T) {
-	// Scenario: Represent a 3x4 matrix.
+	// Scenario: Represent a 3x3 matrix.
 
 	a := m.Mat3{-3, 5, 0, 1, -2, -7, 0, 1, 1}
 
@@ -157,7 +157,7 @@ mat3_submatrix :: proc(t: ^testing.T) {
 
 @(test)
 mat4_submatrix :: proc(t: ^testing.T) {
-	// Scenario: A submatrix of a 4x4 matrix is a 2x2 matrix.
+	// Scenario: A submatrix of a 4x4 matrix is a 3x3 matrix.
 
 	a := m.Mat4{-6, 1, 1, 6, -8, 5, 8, 6, -1, 0, 8, 2, -7, 1, -1, 1}
 
@@ -438,7 +438,7 @@ mat4_rotate_y :: proc(t: ^testing.T) {
 
 @(test)
 mat4_rotate_z :: proc(t: ^testing.T) {
-	// Scenario: Rotating a point around the Y axis.
+	// Scenario: Rotating a point around the Z axis.
 
 	p := m.point(0, 1, 0)
 

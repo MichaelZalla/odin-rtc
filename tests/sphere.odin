@@ -51,7 +51,7 @@ sphere_normal_non_axis :: proc(t: ^testing.T) {
 
 @(test)
 sphere_normal_is_normalized :: proc(t: ^testing.T) {
-	// Scenario: The normal is a a normalized vector.
+	// Scenario: The normal is a normalized vector.
 
 	sqrt_3_over_3 := math.sqrt(m.real(3)) / 3
 

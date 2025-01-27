@@ -48,7 +48,7 @@ camera_ray_for_pixel :: proc(camera: Camera, x: int, y: int) -> Ray {
 	ndc_y := y_centered * camera.pixel_size
 
 	// The pre-transformed, world-space coordinates of the pixel.
-	// Note: Camera looks towards +Z, so -X points to the right!
+	// Note: Camera looks towards -Z, so +X points to the left!
 	world_x := camera.half_width - ndc_x
 	world_y := camera.half_height - ndc_y
 
