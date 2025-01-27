@@ -3,6 +3,7 @@ package tests
 import "core:testing"
 
 import rt "../src"
+import m "../src/math"
 
 @(test)
 material_create_default :: proc(t: ^testing.T) {
@@ -39,4 +40,30 @@ sphere_material_edit :: proc(t: ^testing.T) {
 	s.material = mat
 
 	testing.expect(t, s.material.ambient == 1)
+}
+
+@(test)
+sphere_material_stripe_pattern :: proc(t: ^testing.T) {
+	// Scenario: Lighting with a pattern applied to a material.
+
+	mat := rt.material()
+
+	// Give the material a stripe pattern.
+	mat.pattern = rt.stripe_pattern()
+
+	// Ambient only.
+	mat.ambient = 1.0
+	mat.diffuse = 0.0
+	mat.specular = 0.0
+
+	// Set up a lighting scenario.
+	eye_vector := m.vector(0, 0, -1)
+	normal_vector := m.vector(0, 0, -1)
+	point_light := rt.point_light(m.point(0, 0, -10), rt.White)
+
+	c1 := rt.lighting(&mat, &point_light, m.point(0.9, 0, 0), eye_vector, normal_vector, false)
+	c2 := rt.lighting(&mat, &point_light, m.point(1.1, 0, 0), eye_vector, normal_vector, false)
+
+	testing.expect(t, m.tuple_eq(c1, rt.White))
+	testing.expect(t, m.tuple_eq(c2, rt.Black))
 }

@@ -21,8 +21,20 @@ lighting :: proc(
 	normal: m.Vector,
 	in_shadow: bool,
 ) -> Color {
+	// Determines the material color at the given point.
+
+	pattern, ok := material.pattern.?
+
+	color: Color
+
+	if ok {
+		color = stripe_color_at(&material.pattern.?, point)
+	} else {
+		color = material.color
+	}
+
 	// Combines the surface color with the light's color (i.e., intensity).
-	effective_color := material.color * light.intensity
+	effective_color := color * light.intensity
 
 	// Finds the direction to the light source.
 	point_to_light := light.position - point
