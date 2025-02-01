@@ -46,28 +46,33 @@ pattern_at_shape :: proc(pattern: ^Pattern, shape: ^Shape, point: m.Point) -> Co
 	return pattern.vtable.color_at(pattern, pattern_point)
 }
 
-StripePattern :: struct {
+ColorPattern :: struct {
 	using pattern: Pattern,
 	a, b:          Color,
 }
 
-stripe_pattern :: proc(a: Color = White, b: Color = Black) -> StripePattern {
-	vtable := PatternVTable{stripe_color_at}
+color_pattern_vtable_colors :: proc(
+	color_at: proc(pattern: ^Pattern, point: m.Point) -> Color,
+	a: Color,
+	b: Color,
+) -> ColorPattern {
+	vtable := PatternVTable{color_at}
 
 	pattern := Pattern{1, vtable}
 
-	return StripePattern{pattern, a, b}
+	return ColorPattern{pattern, a, b}
 }
 
-@(private = "file")
-stripe_color_at :: proc(pattern: ^Pattern, point: m.Point) -> Color {
-	stripe_pattern := transmute(^StripePattern)pattern
+stripe_pattern :: proc(a: Color = White, b: Color = Black) -> ColorPattern {
+	return color_pattern_vtable_colors(proc(pattern: ^Pattern, point: m.Point) -> Color {
+			stripe_pattern := transmute(^ColorPattern)pattern
 
-	modulo := math.remainder(math.floor(point.x), 2.0)
+			modulo := math.remainder(math.floor(point.x), 2.0)
 
-	if m.float_eq(modulo, 0.0) {
-		return stripe_pattern.a
-	}
+			if m.float_eq(modulo, 0.0) {
+				return stripe_pattern.a
+			}
 
-	return stripe_pattern.b
+			return stripe_pattern.b
+		}, a, b)
 }

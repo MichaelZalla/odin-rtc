@@ -64,7 +64,7 @@ sphere_material_stripe_pattern :: proc(t: ^testing.T) {
 	normal_vector := m.vector(0, 0, -1)
 	point_light := rt.point_light(m.point(0, 0, -10), rt.White)
 
-	stripe_pattern := transmute(^rt.StripePattern)&mat.pattern.?
+	stripe_pattern := transmute(^rt.ColorPattern)&mat.pattern.?
 
 	c1 := rt.lighting(
 		&mat,
