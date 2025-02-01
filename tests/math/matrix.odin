@@ -1,3 +1,5 @@
+#+feature dynamic-literals
+
 package tests_math
 
 import intrinsics "base:intrinsics"
