@@ -1,3 +1,5 @@
+#+feature dynamic-literals
+
 package rt
 
 import "core:math"
