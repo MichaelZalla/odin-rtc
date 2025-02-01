@@ -1,3 +1,5 @@
+#+feature dynamic-literals
+
 package pit_chapter_07
 
 import "core:math/linalg"
