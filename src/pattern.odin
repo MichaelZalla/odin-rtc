@@ -5,32 +5,69 @@ import linalg "core:math/linalg"
 
 import m "math"
 
+PatternVTable :: struct {
+	color_at: proc(pattern: ^Pattern, point: m.Point) -> Color,
+}
+
 Pattern :: struct {
 	transform: m.Mat4,
-	a:         Color,
-	b:         Color,
+	vtable:    PatternVTable,
 }
 
-stripe_pattern :: proc(a: Color = White, b: Color = Black) -> Pattern {
-	return Pattern{1, a, b}
+pattern_transform_vtable :: proc(transform: m.Mat4, vtable: PatternVTable) -> Pattern {
+	return Pattern{transform, vtable}
 }
 
-stripe_color_at :: proc(pattern: ^Pattern, point: m.Point) -> Color {
-	modulo := math.remainder(math.floor(point.x), 2.0)
-
-	if m.float_eq(modulo, 0.0) {
-		return pattern.a
-	}
-
-	return pattern.b
+pattern_vtable :: proc(vtable: PatternVTable) -> Pattern {
+	return Pattern{1, vtable}
 }
 
-stripe_color_at_object :: proc(pattern: ^Pattern, object: ^Shape, point: m.Point) -> Color {
-	world_to_object := linalg.inverse_transpose(object.transform)
+pattern_default_vtable := PatternVTable{proc(pattern: ^Pattern, point: m.Point) -> Color {
+		return Color{point.x, point.y, point.z, 0}
+	}}
+
+pattern_default :: proc() -> Pattern {
+	return Pattern{1, pattern_default_vtable}
+}
+
+pattern :: proc {
+	pattern_transform_vtable,
+	pattern_vtable,
+	pattern_default,
+}
+
+pattern_at_shape :: proc(pattern: ^Pattern, shape: ^Shape, point: m.Point) -> Color {
+	world_to_object := linalg.inverse_transpose(shape.transform)
 	object_to_pattern := linalg.inverse_transpose(pattern.transform)
 
 	object_point := point * world_to_object
 	pattern_point := object_point * object_to_pattern
 
-	return stripe_color_at(pattern, pattern_point)
+	return pattern.vtable.color_at(pattern, pattern_point)
+}
+
+StripePattern :: struct {
+	using pattern: Pattern,
+	a, b:          Color,
+}
+
+stripe_pattern :: proc(a: Color = White, b: Color = Black) -> StripePattern {
+	vtable := PatternVTable{stripe_color_at}
+
+	pattern := Pattern{1, vtable}
+
+	return StripePattern{pattern, a, b}
+}
+
+@(private = "file")
+stripe_color_at :: proc(pattern: ^Pattern, point: m.Point) -> Color {
+	stripe_pattern := transmute(^StripePattern)pattern
+
+	modulo := math.remainder(math.floor(point.x), 2.0)
+
+	if m.float_eq(modulo, 0.0) {
+		return stripe_pattern.a
+	}
+
+	return stripe_pattern.b
 }

@@ -1,6 +1,5 @@
 package tests
 
-import "core:log"
 import "core:strings"
 import "core:testing"
 

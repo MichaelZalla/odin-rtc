@@ -1,7 +1,6 @@
 package tests_math
 
 import intrinsics "base:intrinsics"
-import "core:log"
 import linalg "core:math/linalg"
 import "core:testing"
 

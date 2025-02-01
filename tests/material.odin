@@ -50,7 +50,9 @@ sphere_material_stripe_pattern :: proc(t: ^testing.T) {
 	object := rt.sphere()
 
 	// Give the material a stripe pattern.
-	mat.pattern = rt.stripe_pattern()
+	pattern := rt.stripe_pattern()
+
+	mat.pattern = &pattern
 
 	// Ambient only.
 	mat.ambient = 1.0
@@ -62,6 +64,8 @@ sphere_material_stripe_pattern :: proc(t: ^testing.T) {
 	normal_vector := m.vector(0, 0, -1)
 	point_light := rt.point_light(m.point(0, 0, -10), rt.White)
 
+	stripe_pattern := transmute(^rt.StripePattern)&mat.pattern.?
+
 	c1 := rt.lighting(
 		&mat,
 		&object,
@@ -71,6 +75,8 @@ sphere_material_stripe_pattern :: proc(t: ^testing.T) {
 		normal_vector,
 		false,
 	)
+
+	testing.expect(t, m.tuple_eq(c1, rt.White))
 
 	c2 := rt.lighting(
 		&mat,
@@ -82,6 +88,5 @@ sphere_material_stripe_pattern :: proc(t: ^testing.T) {
 		false,
 	)
 
-	testing.expect(t, m.tuple_eq(c1, rt.White))
 	testing.expect(t, m.tuple_eq(c2, rt.Black))
 }

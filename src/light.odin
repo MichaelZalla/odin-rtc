@@ -29,7 +29,7 @@ lighting :: proc(
 	color: Color
 
 	if ok {
-		color = stripe_color_at_object(&material.pattern.?, object, point)
+		color = pattern_at_shape(pattern, object, point)
 	} else {
 		color = material.color
 	}

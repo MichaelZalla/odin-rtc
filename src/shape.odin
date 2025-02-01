@@ -41,6 +41,7 @@ shape_default :: proc() -> Shape {
 shape :: proc {
 	shape_transform_material_vtable,
 	shape_vtable,
+	shape_default,
 }
 
 shape_normal :: proc(shape: ^Shape, point: m.Point) -> m.Vector {

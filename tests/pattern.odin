@@ -6,6 +6,55 @@ import rt "../src"
 import m "../src/math"
 
 @(test)
+pattern_default_transform :: proc(t: ^testing.T) {
+	// Scenario: The default pattern transform.
+
+	pattern := rt.pattern_default()
+
+	testing.expect(t, pattern.transform == m.Mat4(1))
+}
+
+@(test)
+pattern_assign_transform :: proc(t: ^testing.T) {
+	// Scenario: Assigning a transform to a pattern.
+
+	pattern := rt.pattern_default()
+
+	pattern.transform = m.mat4_translate(m.vector(1, 2, 3))
+
+	testing.expect(t, pattern.transform == m.mat4_translate(m.vector(1, 2, 3)))
+}
+
+@(test)
+pattern_object_transform :: proc(t: ^testing.T) {
+	// Scenario: A pattern with an object transform.
+
+	shape := rt.sphere()
+	shape.transform = m.mat4_scale(2)
+
+	pattern := rt.pattern_default()
+
+	c := rt.pattern_at_shape(&pattern, &shape, m.point(2, 3, 4))
+
+	testing.expect(t, c == rt.color(1, 1.5, 2))
+}
+
+@(test)
+pattern_transform_object_transform :: proc(t: ^testing.T) {
+	// Scenario: A pattern with both an object transform and a pattern transform.
+
+	shape := rt.sphere()
+	shape.transform = m.mat4_scale(2)
+
+	pattern := rt.pattern_default()
+	pattern.transform = m.mat4_translate(m.vector(0.5, 1, 1.5))
+
+	c := rt.pattern_at_shape(&pattern, &shape, m.point(2.5, 3, 3.5))
+
+	testing.expect(t, c == rt.color(0.75, 0.5, 0.25))
+}
+
+@(test)
 stripe_pattern_colors :: proc(t: ^testing.T) {
 	// Scenario: Creating a stripe pattern with default colors.
 
@@ -21,9 +70,9 @@ stripe_pattern_constant_in_y :: proc(t: ^testing.T) {
 
 	pattern := rt.stripe_pattern()
 
-	testing.expect(t, rt.stripe_color_at(&pattern, m.point(0, 0, 0)) == rt.White)
-	testing.expect(t, rt.stripe_color_at(&pattern, m.point(0, 1, 0)) == rt.White)
-	testing.expect(t, rt.stripe_color_at(&pattern, m.point(0, 2, 0)) == rt.White)
+	testing.expect(t, pattern.vtable.color_at(&pattern, m.point(0, 0, 0)) == rt.White)
+	testing.expect(t, pattern.vtable.color_at(&pattern, m.point(0, 1, 0)) == rt.White)
+	testing.expect(t, pattern.vtable.color_at(&pattern, m.point(0, 2, 0)) == rt.White)
 }
 
 @(test)
@@ -32,9 +81,9 @@ stripe_pattern_constant_in_z :: proc(t: ^testing.T) {
 
 	pattern := rt.stripe_pattern()
 
-	testing.expect(t, rt.stripe_color_at(&pattern, m.point(0, 0, 0)) == rt.White)
-	testing.expect(t, rt.stripe_color_at(&pattern, m.point(0, 0, 1)) == rt.White)
-	testing.expect(t, rt.stripe_color_at(&pattern, m.point(0, 0, 2)) == rt.White)
+	testing.expect(t, pattern.vtable.color_at(&pattern, m.point(0, 0, 0)) == rt.White)
+	testing.expect(t, pattern.vtable.color_at(&pattern, m.point(0, 0, 1)) == rt.White)
+	testing.expect(t, pattern.vtable.color_at(&pattern, m.point(0, 0, 2)) == rt.White)
 }
 
 @(test)
@@ -43,12 +92,12 @@ stripe_pattern_alternating_in_x :: proc(t: ^testing.T) {
 
 	pattern := rt.stripe_pattern()
 
-	testing.expect(t, rt.stripe_color_at(&pattern, m.point(0, 0, 0)) == rt.White)
-	testing.expect(t, rt.stripe_color_at(&pattern, m.point(0.9, 0, 0)) == rt.White)
-	testing.expect(t, rt.stripe_color_at(&pattern, m.point(1, 0, 0)) == rt.Black)
-	testing.expect(t, rt.stripe_color_at(&pattern, m.point(-0.1, 0, 0)) == rt.Black)
-	testing.expect(t, rt.stripe_color_at(&pattern, m.point(-1, 0, 0)) == rt.Black)
-	testing.expect(t, rt.stripe_color_at(&pattern, m.point(-1.1, 0, 0)) == rt.White)
+	testing.expect(t, pattern.vtable.color_at(&pattern, m.point(0, 0, 0)) == rt.White)
+	testing.expect(t, pattern.vtable.color_at(&pattern, m.point(0.9, 0, 0)) == rt.White)
+	testing.expect(t, pattern.vtable.color_at(&pattern, m.point(1, 0, 0)) == rt.Black)
+	testing.expect(t, pattern.vtable.color_at(&pattern, m.point(-0.1, 0, 0)) == rt.Black)
+	testing.expect(t, pattern.vtable.color_at(&pattern, m.point(-1, 0, 0)) == rt.Black)
+	testing.expect(t, pattern.vtable.color_at(&pattern, m.point(-1.1, 0, 0)) == rt.White)
 }
 
 @(test)
@@ -62,7 +111,7 @@ stripe_pattern_object_transform :: proc(t: ^testing.T) {
 
 	pattern := rt.stripe_pattern()
 
-	c := rt.stripe_color_at_object(&pattern, &object, m.point(1.5, 0, 0))
+	c := rt.pattern_at_shape(&pattern, &object, m.point(1.5, 0, 0))
 
 	testing.expect(t, m.tuple_eq(c, rt.White))
 }
@@ -77,7 +126,7 @@ stripe_pattern_pattern_transform :: proc(t: ^testing.T) {
 
 	pattern.transform = m.mat4_scale(2)
 
-	c := rt.stripe_color_at_object(&pattern, &object, m.point(1.5, 0, 0))
+	c := rt.pattern_at_shape(&pattern, &object, m.point(1.5, 0, 0))
 
 	testing.expect(t, m.tuple_eq(c, rt.White))
 }
@@ -92,7 +141,7 @@ stripe_pattern_object_and_pattern_transform :: proc(t: ^testing.T) {
 	pattern := rt.stripe_pattern()
 	pattern.transform = m.mat4_translate(m.vector(0.5, 0, 0))
 
-	c := rt.stripe_color_at_object(&pattern, &object, m.point(2.5, 0, 0))
+	c := rt.pattern_at_shape(&pattern, &object, m.point(2.5, 0, 0))
 
 	testing.expect(t, m.tuple_eq(c, rt.White))
 }

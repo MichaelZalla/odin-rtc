@@ -4,7 +4,7 @@ import m "math"
 
 Material :: struct {
 	color:             Color,
-	pattern:           Maybe(Pattern),
+	pattern:           Maybe(^Pattern),
 	ambient:           m.real,
 	diffuse:           m.real,
 	specular:          m.real,
@@ -13,7 +13,7 @@ Material :: struct {
 
 material :: proc(
 	color: Color = White,
-	pattern: Maybe(Pattern) = nil,
+	pattern: Maybe(^Pattern) = nil,
 	ambient: m.real = 0.1,
 	diffuse: m.real = 0.9,
 	specular: m.real = 0.9,
