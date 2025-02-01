@@ -35,9 +35,6 @@ main :: proc() {
 		sphere := sphere
 		sphere.transform = m.mat4_scale(0.8)
 
-		black := rt.color(0, 0, 0)
-		red := rt.color(1, 0, 0)
-
 		for y in 0 ..< HEIGHT {
 			for x in 0 ..< WIDTH {
 				coord := m.point(m.real(x), m.real(y), -5)
@@ -52,7 +49,7 @@ main :: proc() {
 
 				hit := rt.hit(xs)
 
-				color := black if hit == nil else red
+				color := rt.Black if hit == nil else rt.Red
 
 				rt.canvas_pixel_set(canvas, x, y, color)
 			}
