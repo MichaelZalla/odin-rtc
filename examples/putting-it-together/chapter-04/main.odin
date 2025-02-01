@@ -15,7 +15,7 @@ main :: proc() {
 	canvas := rt.canvas(DIMENSION, DIMENSION)
 	defer rt.canvas_free(canvas)
 
-	get_clock_points_world_space :: proc() -> [dynamic]m.Point {
+	get_clock_points_world_space :: proc() -> [12]m.Point {
 		reflect_over_x := m.mat4_scale(m.vector(1, -1, 1))
 		reflect_over_y := m.mat4_scale(m.vector(-1, 1, 1))
 
@@ -37,7 +37,7 @@ main :: proc() {
 		ten := reflect_over_y * two
 		eight := reflect_over_x * ten
 
-		return [dynamic]m.Point {
+		return [12]m.Point {
 			one,
 			two,
 			three,
@@ -53,8 +53,8 @@ main :: proc() {
 		}
 	}
 
-	get_clock_points_world_space_naive :: proc() -> [dynamic]m.Point {
-		points: [dynamic]m.Point
+	get_clock_points_world_space_naive :: proc() -> [12]m.Point {
+		points: [12]m.Point
 
 		midnight := m.point(0, 1, 0)
 
@@ -63,7 +63,7 @@ main :: proc() {
 		for i in 0 ..< 12 {
 			rotation := m.mat4_rotate_z(angle_theta_delta * f64(i))
 
-			append(&points, rotation * midnight)
+			points[i] = rotation * midnight
 		}
 
 		return points
@@ -107,7 +107,6 @@ main :: proc() {
 	}
 
 	clock := get_clock_points_world_space()
-	defer delete(clock)
 
 	white := rt.color(1, 1, 1)
 
