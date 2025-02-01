@@ -86,3 +86,21 @@ linear_gradient_pattern :: proc(a: Color = White, b: Color = Black) -> ColorPatt
 			return m.lerp(gradient_pattern.a, gradient_pattern.b, alpha)
 		}, a, b)
 }
+
+ring_pattern :: proc(a: Color = White, b: Color = Black) -> ColorPattern {
+	return color_pattern_vtable_colors(proc(pattern: ^Pattern, point: m.Point) -> Color {
+			ring_pattern := transmute(^ColorPattern)pattern
+
+			distance_x_z := math.sqrt(point.x * point.x + point.z * point.z)
+
+			floored := math.floor(distance_x_z)
+
+			rem := math.remainder(floored, 2)
+
+			if m.float_eq(rem, 0.0) {
+				return ring_pattern.a
+			}
+
+			return ring_pattern.b
+		}, a, b)
+}
