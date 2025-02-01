@@ -145,3 +145,20 @@ stripe_pattern_object_and_pattern_transform :: proc(t: ^testing.T) {
 
 	testing.expect(t, m.tuple_eq(c, rt.White))
 }
+
+@(test)
+linear_gradient_pattern :: proc(t: ^testing.T) {
+	// Scenario: A linear gradient linearly interpolates between two colors.
+
+	pattern := rt.linear_gradient_pattern(rt.White, rt.Black)
+
+	c1 := pattern.vtable.color_at(&pattern, m.point(0, 0, 0))
+	c2 := pattern.vtable.color_at(&pattern, m.point(0.25, 0, 0))
+	c3 := pattern.vtable.color_at(&pattern, m.point(0.5, 0, 0))
+	c4 := pattern.vtable.color_at(&pattern, m.point(0.75, 0, 0))
+
+	testing.expect(t, c1 == rt.White)
+	testing.expect(t, c2 == rt.color(0.75, 0.75, 0.75))
+	testing.expect(t, c3 == rt.color(0.5, 0.5, 0.5))
+	testing.expect(t, c4 == rt.color(0.25, 0.25, 0.25))
+}

@@ -39,6 +39,10 @@ to_xyz :: proc(t: $T/Tuple) -> [3]real {
 	return [3]real{t.x, t.y, t.z}
 }
 
+lerp :: proc(a, b: $T/Tuple, alpha: real) -> T {
+	return a + (b - a) * alpha
+}
+
 // Point
 
 Point :: Tuple

@@ -76,3 +76,13 @@ stripe_pattern :: proc(a: Color = White, b: Color = Black) -> ColorPattern {
 			return stripe_pattern.b
 		}, a, b)
 }
+
+linear_gradient_pattern :: proc(a: Color = White, b: Color = Black) -> ColorPattern {
+	return color_pattern_vtable_colors(proc(pattern: ^Pattern, point: m.Point) -> Color {
+			gradient_pattern := transmute(^ColorPattern)pattern
+
+			alpha := point.x - math.floor(point.x)
+
+			return m.lerp(gradient_pattern.a, gradient_pattern.b, alpha)
+		}, a, b)
+}
