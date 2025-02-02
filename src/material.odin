@@ -9,6 +9,7 @@ Material :: struct {
 	diffuse:           m.real,
 	specular:          m.real,
 	specular_exponent: m.real,
+	reflectivity:      m.real,
 }
 
 material :: proc(
@@ -18,6 +19,7 @@ material :: proc(
 	diffuse: m.real = 0.9,
 	specular: m.real = 0.9,
 	specular_exponent: m.real = 200.0,
+	reflectivity: m.real = 0.0,
 ) -> Material {
-	return Material{color, pattern, ambient, diffuse, specular, specular_exponent}
+	return Material{color, pattern, ambient, diffuse, specular, specular_exponent, reflectivity}
 }

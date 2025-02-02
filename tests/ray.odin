@@ -101,3 +101,21 @@ precompute_intersection_inside :: proc(t: ^testing.T) {
 	testing.expect(t, comps.normal == m.vector(0, 0, -1))
 	testing.expect(t, comps.inside)
 }
+
+@(test)
+precompute_reflection_vector :: proc(t: ^testing.T) {
+	// Scenario: Precomputing the reflection vector.
+
+	shape := rt.plane()
+
+	origin := m.point(0, 1, -1)
+	direction := m.vector(0, -sqrt_2_over_2, sqrt_2_over_2)
+
+	ray := rt.ray(origin, direction)
+
+	intersection := rt.intersection(sqrt_2, &shape)
+
+	comps := rt.ray_prepare_computations(ray, intersection)
+
+	testing.expect(t, m.tuple_eq(comps.reflect, m.vector(0, sqrt_2_over_2, sqrt_2_over_2)))
+}

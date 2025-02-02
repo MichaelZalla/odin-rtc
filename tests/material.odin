@@ -90,3 +90,12 @@ sphere_material_stripe_pattern :: proc(t: ^testing.T) {
 
 	testing.expect(t, m.tuple_eq(c2, rt.Black))
 }
+
+@(test)
+material_default_reflectivity :: proc(t: ^testing.T) {
+	// Scenario: Reflectivity for the default material.
+
+	mat := rt.material()
+
+	testing.expect(t, mat.reflectivity == 0.0)
+}

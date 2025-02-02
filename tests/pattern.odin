@@ -172,7 +172,7 @@ ring_pattern :: proc(t: ^testing.T) {
 	c1 := pattern.vtable.color_at(&pattern, m.point(0, 0, 0))
 	c2 := pattern.vtable.color_at(&pattern, m.point(1, 0, 0))
 	c3 := pattern.vtable.color_at(&pattern, m.point(0, 0, 1))
-	c4 := pattern.vtable.color_at(&pattern, m.point(0.708, 0, 0.708)) // sqrt(2)/2
+	c4 := pattern.vtable.color_at(&pattern, m.point(sqrt_2_over_2, 0, sqrt_2_over_2))
 
 	testing.expect(t, c1 == rt.White)
 	testing.expect(t, c2 == rt.Black)

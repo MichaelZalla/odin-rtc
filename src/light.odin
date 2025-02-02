@@ -9,8 +9,17 @@ PointLight :: struct {
 	intensity: Color,
 }
 
-point_light :: proc(position: m.Point, intensity: Color) -> PointLight {
+point_light_position_intensity :: proc(position: m.Point, intensity: Color) -> PointLight {
 	return PointLight{position, intensity}
+}
+
+point_light_default :: proc() -> PointLight {
+	return point_light_position_intensity(m.point(0, 0, 0), White)
+}
+
+point_light :: proc {
+	point_light_default,
+	point_light_position_intensity,
 }
 
 lighting :: proc(
@@ -70,4 +79,25 @@ lighting :: proc(
 	}
 
 	return ambient + diffuse + specular
+}
+
+reflected_color :: proc(world: World, x: RayIntersectionResult, remaining: int = 5) -> Color {
+	reflectivity := x.shape.material.reflectivity
+
+	if reflectivity == 0 || remaining == 0 {
+		return Black
+	}
+
+	// Creates a new ray, originating at the hit's location, and pointed in the
+	// direction of `reflect`.
+
+	reflected_ray := ray(x.over_point, x.reflect)
+
+	// Finds the color reflected by this reflection ray's next world intersection.
+
+	color := world_color_at(world, reflected_ray, remaining - 1)
+
+	// Attentuates this color by the current shape's (material's) reflectivity.
+
+	return color * reflectivity
 }

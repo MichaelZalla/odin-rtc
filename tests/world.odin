@@ -1,15 +1,18 @@
 package tests
 
 import "core:testing"
+import "core:time"
 
 import rt "../src"
 import m "../src/math"
 
 make_sphere_world :: proc(sphere1: ^rt.Sphere, sphere2: ^rt.Sphere) -> rt.World {
+	// Outer sphere.
 	sphere1.material.color = rt.color(0.8, 1, 0.6)
 	sphere1.material.diffuse = 0.7
 	sphere1.material.specular = 0.2
 
+	// Inner sphere.
 	sphere2.transform = m.mat4_scale(0.5)
 
 	world := rt.world_default()
@@ -205,4 +208,67 @@ world_color_at_hit_between_objects :: proc(t: ^testing.T) {
 	color := rt.world_color_at(world, ray)
 
 	testing.expect(t, m.tuple_eq(color, inner.material.color))
+}
+
+@(test)
+world_shade_hit_reflective_material :: proc(t: ^testing.T) {
+	// Scenario: world_shade_hit() with a reflective material.
+
+	sphere1 := rt.sphere()
+	sphere2 := rt.sphere()
+
+	world := make_sphere_world(&sphere1, &sphere2)
+	defer rt.world_free(world)
+
+	// Configures a semi-reflective ground plane, positioned at Y=-1.
+
+	ground := rt.plane()
+	ground.transform = m.mat4_translate(m.vector(0, -1, 0))
+	ground.material.reflectivity = 0.5
+
+	append(&world.shapes, &ground)
+
+	// Create a ray that interacts with the world's ground plane and outer sphere.
+
+	ray := rt.ray(m.point(0, 0, -3), m.vector(0, -sqrt_2_over_2, sqrt_2_over_2))
+
+	intersection := rt.intersection(sqrt_2, &ground)
+
+	comps := rt.ray_prepare_computations(ray, intersection)
+
+	// We expect this ray to reflect some of the outer sphere's color (green),
+	// as it first hits the semi-reflective ground plane.
+
+	color := rt.world_shade_hit(world, comps)
+
+	expected_color := rt.color(0.87675, 0.92434, 0.82917)
+
+	testing.expect(t, m.tuple_eq(color, expected_color))
+}
+
+@(test)
+world_color_at_mutually_reflective_surfaces :: proc(t: ^testing.T) {
+	// Scenario: world_color_at() with mutually reflective materials.
+
+	world := rt.world()
+	world.light = rt.point_light()
+	defer rt.world_free(world)
+
+	lower_plane := rt.plane()
+	lower_plane.transform = m.mat4_translate(m.vector(0, -2, 0))
+	lower_plane.material.reflectivity = 1
+
+	upper_plane := rt.plane()
+	upper_plane.transform = m.mat4_translate(m.vector(0, 2, 0))
+	upper_plane.material.reflectivity = 1
+
+	append(&world.shapes, &lower_plane)
+	append(&world.shapes, &upper_plane)
+
+	ray := rt.ray(m.point(0, 0, 0), m.vector(0, 1, 0))
+
+	testing.set_fail_timeout(t, 5 * time.Second)
+
+	// Verify that this call returns eventually.
+	rt.world_color_at(world, ray)
 }

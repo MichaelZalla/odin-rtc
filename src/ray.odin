@@ -24,6 +24,7 @@ RayIntersectionResult :: struct {
 	over_point: m.Point,
 	eye:        m.Vector,
 	normal:     m.Vector,
+	reflect:    m.Vector,
 	t:          m.real,
 	shape:      ^Shape,
 	inside:     bool,
@@ -42,6 +43,8 @@ ray_prepare_computations :: proc(ray: Ray, intersection: Intersection) -> RayInt
 		normal = -normal
 	}
 
+	reflect := m.reflect(ray.direction, normal)
+
 	over_point := point + normal * m.EPSILON
 
 	return RayIntersectionResult {
@@ -49,6 +52,7 @@ ray_prepare_computations :: proc(ray: Ray, intersection: Intersection) -> RayInt
 		over_point,
 		eye,
 		normal,
+		reflect,
 		intersection.t,
 		intersection.shape,
 		inside,

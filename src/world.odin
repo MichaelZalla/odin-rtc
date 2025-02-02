@@ -75,18 +75,20 @@ world_point_is_shadowed :: proc(world: World, point: m.Point) -> bool {
 	}
 }
 
-world_shade_hit :: proc(world: World, x: RayIntersectionResult) -> Color {
+world_shade_hit :: proc(world: World, x: RayIntersectionResult, remaining: int = 5) -> Color {
 	material := x.shape.material
 	light := world.light.?
 
 	in_shadow := world_point_is_shadowed(world, x.over_point)
 
-	result := lighting(&material, x.shape, &light, x.over_point, x.eye, x.normal, in_shadow)
+	surface_color := lighting(&material, x.shape, &light, x.over_point, x.eye, x.normal, in_shadow)
 
-	return result
+	reflected_color := reflected_color(world, x, remaining)
+
+	return surface_color + reflected_color
 }
 
-world_color_at :: proc(world: World, ray: Ray) -> Color {
+world_color_at :: proc(world: World, ray: Ray, remaining: int = 5) -> Color {
 	xs := world_intersect_ray(world, ray)
 	defer delete(xs)
 
@@ -97,7 +99,7 @@ world_color_at :: proc(world: World, ray: Ray) -> Color {
 	} else {
 		comps := ray_prepare_computations(ray, hit.?)
 
-		color := world_shade_hit(world, comps)
+		color := world_shade_hit(world, comps, remaining)
 
 		return color
 	}
