@@ -104,3 +104,19 @@ ring_pattern :: proc(a: Color = White, b: Color = Black) -> ColorPattern {
 			return ring_pattern.b
 		}, a, b)
 }
+
+checkers_pattern :: proc(a: Color = White, b: Color = Black) -> ColorPattern {
+	return color_pattern_vtable_colors(proc(pattern: ^Pattern, point: m.Point) -> Color {
+			checkers_pattern := transmute(^ColorPattern)pattern
+
+			floored := math.floor(point.x) + math.floor(point.y) + math.floor(point.z)
+
+			rem := math.remainder(floored, 2)
+
+			if (m.float_eq(rem, 0)) {
+				return checkers_pattern.a
+			}
+
+			return checkers_pattern.b
+		}, a, b)
+}

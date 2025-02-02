@@ -150,7 +150,7 @@ stripe_pattern_object_and_pattern_transform :: proc(t: ^testing.T) {
 linear_gradient_pattern :: proc(t: ^testing.T) {
 	// Scenario: A linear gradient linearly interpolates between two colors.
 
-	pattern := rt.linear_gradient_pattern(rt.White, rt.Black)
+	pattern := rt.linear_gradient_pattern()
 
 	c1 := pattern.vtable.color_at(&pattern, m.point(0, 0, 0))
 	c2 := pattern.vtable.color_at(&pattern, m.point(0.25, 0, 0))
@@ -167,7 +167,7 @@ linear_gradient_pattern :: proc(t: ^testing.T) {
 ring_pattern :: proc(t: ^testing.T) {
 	// Scenario: A ring pattern should extend in both X and Z.
 
-	pattern := rt.ring_pattern(rt.White, rt.Black)
+	pattern := rt.ring_pattern()
 
 	c1 := pattern.vtable.color_at(&pattern, m.point(0, 0, 0))
 	c2 := pattern.vtable.color_at(&pattern, m.point(1, 0, 0))
@@ -178,4 +178,49 @@ ring_pattern :: proc(t: ^testing.T) {
 	testing.expect(t, c2 == rt.Black)
 	testing.expect(t, c3 == rt.Black)
 	testing.expect(t, c4 == rt.Black)
+}
+
+@(test)
+checkers_pattern_repeat_x :: proc(t: ^testing.T) {
+	// Scenario: A checkers pattern should repeat in X.
+
+	pattern := rt.checkers_pattern()
+
+	c1 := pattern.vtable.color_at(&pattern, m.point(0, 0, 0))
+	c2 := pattern.vtable.color_at(&pattern, m.point(0.99, 0, 0))
+	c3 := pattern.vtable.color_at(&pattern, m.point(1.01, 0, 0))
+
+	testing.expect(t, c1 == rt.White)
+	testing.expect(t, c2 == rt.White)
+	testing.expect(t, c3 == rt.Black)
+}
+
+@(test)
+checkers_pattern_repeat_y :: proc(t: ^testing.T) {
+	// Scenario: A checkers pattern should repeat in Y.
+
+	pattern := rt.checkers_pattern()
+
+	c1 := pattern.vtable.color_at(&pattern, m.point(0, 0, 0))
+	c2 := pattern.vtable.color_at(&pattern, m.point(0, 0.99, 0))
+	c3 := pattern.vtable.color_at(&pattern, m.point(0, 1.01, 0))
+
+	testing.expect(t, c1 == rt.White)
+	testing.expect(t, c2 == rt.White)
+	testing.expect(t, c3 == rt.Black)
+}
+
+@(test)
+checkers_pattern_repeat_z :: proc(t: ^testing.T) {
+	// Scenario: A checkers pattern should repeat in Z.
+
+	pattern := rt.checkers_pattern()
+
+	c1 := pattern.vtable.color_at(&pattern, m.point(0, 0, 0))
+	c2 := pattern.vtable.color_at(&pattern, m.point(0, 0, 0.99))
+	c3 := pattern.vtable.color_at(&pattern, m.point(0, 0, 1.01))
+
+	testing.expect(t, c1 == rt.White)
+	testing.expect(t, c2 == rt.White)
+	testing.expect(t, c3 == rt.Black)
 }
